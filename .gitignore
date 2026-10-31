@@ -1,0 +1,10 @@
+# Things that should never be saved in the project history
+
+# Windows / macOS clutter
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Logs and temporary files
+*.log
+*.tmp

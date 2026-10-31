@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product — LabSupply</title>
+  <meta name="description" content="Lot-tested research compound with a batch-specific certificate of analysis, shipped from the US in 2–3 days.">
+  <meta name="theme-color" content="#FAF7F2">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="products.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="topbar">
+    <div class="wrap topbar__inner">
+      <p class="topbar__rating">Rated <strong>4.9 / 5</strong> by 1,200+ labs <span class="topbar__stars" aria-hidden="true">★★★★★</span></p>
+      <p>Free US shipping over $199 · HPLC-MS verified, 99%+ purity</p>
+      <p class="topbar__note">For research use only</p>
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="wrap header__row">
+      <a class="brand" href="index.html">
+        <span class="brand__mark" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 3h5M10.5 3v6.5L5.6 18.2A2 2 0 0 0 7.4 21h9.2a2 2 0 0 0 1.8-2.8L13.5 9.5V3"/><path d="M8 15.5h8"/></svg>
+        </span>
+        <span>LabSupply</span>
+        <span class="brand__sub">Research</span>
+      </a>
+      <form class="search" role="search" action="shop.html" method="get">
+        <label class="visually-hidden" for="site-search">Products search</label>
+        <input id="site-search" type="search" name="q" placeholder="Products search" autocomplete="off">
+        <button class="search__btn" type="submit" aria-label="Search products">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+        </button>
+      </form>
+      <div class="header__actions">
+        <a class="icon-btn" href="contact.html" aria-label="Account and support">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
+        </a>
+        <a class="cart" href="cart.html">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h1.8l1.9 9.4h9.6L20 7.2H7"/><circle cx="9.6" cy="19" r="1.4"/><circle cx="16.8" cy="19" r="1.4"/></svg>
+          <span class="cart__label">Cart</span>
+          <span class="cart__count is-empty" data-cart-count aria-live="polite" aria-label="Items in cart">0</span>
+        </a>
+      </div>
+    </div>
+    <nav class="nav" aria-label="Main">
+      <div class="wrap nav__inner">
+        <a href="shop.html">Shop compounds</a>
+        <a href="shop.html#categories">Browse categories</a>
+        <a href="faq.html#quality">Verify a COA</a>
+        <a href="faq.html#quality">Test results</a>
+        <a href="faq.html">Support</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span aria-hidden="true">/</span>
+        <a href="shop.html">Shop</a>
+        <span aria-hidden="true">/</span>
+        <span data-breadcrumb-name>Product</span>
+      </nav>
+    </div>
+
+    <div class="wrap product" data-product>
+      <div class="product__media">
+        <img data-product-image src="images/vial-01.webp" width="800" height="800" alt="Research vial">
+      </div>
+      <div class="product__info">
+        <p class="kicker" data-product-cat></p>
+        <h1 data-product-name>Loading…</h1>
+        <p class="product__price" data-product-price></p>
+        <p class="product__text" data-product-blurb></p>
+
+        <div class="product__buy">
+          <div class="qty">
+            <button type="button" data-qty-minus aria-label="Decrease quantity">−</button>
+            <output data-qty-output>1</output>
+            <button type="button" data-qty-plus aria-label="Increase quantity">+</button>
+          </div>
+          <button class="btn btn--solid" type="button" data-add-qty>Add to cart</button>
+        </div>
+
+        <dl class="specs" data-product-specs></dl>
+
+        <div class="notice-box">
+          <strong>For research use only.</strong> Not for human or animal consumption, diagnosis, treatment or household use. Sold to qualified researchers and institutions.
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap" data-product-missing hidden>
+      <div class="empty-state">
+        <strong>That product is not in the catalogue</strong>
+        It may have been renamed or withdrawn. <a href="shop.html">Browse all compounds</a> to find it.
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <ul class="footer__features">
+        <li class="footer__feature">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h10v9H3z"/><path d="M13 10h4l4 3.5V16h-8"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>
+          <div><h3>Free shipping</h3><p>Orders over $199 ship free.</p></div>
+        </li>
+        <li class="footer__feature">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+          <div><h3>Ships from USA</h3><p>Domestic fulfillment, tracked 2–3 day delivery.</p></div>
+        </li>
+        <li class="footer__feature">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4.4 3 7.6 7 9 4-1.4 7-4.6 7-9V6z"/><path d="m9 12 2 2 4-4"/></svg>
+          <div><h3>HPLC-verified purity</h3><p>Every batch is strictly third-party tested.</p></div>
+        </li>
+        <li class="footer__feature">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+          <div><h3>Secure checkout</h3><p>Visa, Amex, Discover and more.</p></div>
+        </li>
+      </ul>
+      <div class="footer__main">
+        <div class="footer__brand">
+          <a class="brand" href="index.html">
+            <span class="brand__mark" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 3h5M10.5 3v6.5L5.6 18.2A2 2 0 0 0 7.4 21h9.2a2 2 0 0 0 1.8-2.8L13.5 9.5V3"/><path d="M8 15.5h8"/></svg>
+            </span>
+            <span>LabSupply</span>
+          </a>
+          <p>LabSupply is your source for high-purity research compounds in the USA. Every batch is third-party tested and HPLC-MS verified, with COAs published for every lot.</p>
+          <p><a href="mailto:hello@labsupply.example">hello@labsupply.example</a></p>
+        </div>
+        <div class="footer__cols">
+          <div class="footer__col">
+            <h3>Browse categories</h3>
+            <ul>
+              <li><a href="shop.html#categories">Compound blends</a></li>
+              <li><a href="shop.html#categories">Copper compounds</a></li>
+              <li><a href="shop.html#categories">Bioregulators</a></li>
+              <li><a href="shop.html#categories">Cofactors &amp; coenzymes</a></li>
+              <li><a href="shop.html">Shop all</a></li>
+            </ul>
+          </div>
+          <div class="footer__col">
+            <h3>Shop compounds</h3>
+            <ul>
+              <li><a href="product.html?id=1">BPC-157</a></li>
+              <li><a href="product.html?id=3">MOTS-c</a></li>
+              <li><a href="product.html?id=2">TB-500</a></li>
+              <li><a href="product.html?id=4">GHK-Cu</a></li>
+              <li><a href="product.html?id=5">Tesamorelin</a></li>
+            </ul>
+          </div>
+          <div class="footer__col">
+            <h3>Resources</h3>
+            <ul>
+              <li><a href="faq.html">Support center</a></li>
+              <li><a href="faq.html#quality">COA library</a></li>
+              <li><a href="contact.html">Contact us</a></li>
+              <li><a href="about.html">About us</a></li>
+              <li><a href="faq.html#shipping">Shipping &amp; returns</a></li>
+            </ul>
+          </div>
+          <div class="footer__col">
+            <h3>Shipping</h3>
+            <ul>
+              <li><a href="faq.html#shipping">2–3 day US delivery</a></li>
+              <li><a href="faq.html#shipping">Free over $199</a></li>
+              <li><a href="faq.html#shipping">Order tracking</a></li>
+              <li><a href="faq.html#research-use">Research-use policy</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2026 LabSupply. All rights reserved.</p>
+        <p class="footer__legal">Disclaimer: all products sold on this website are intended for laboratory research, analytical and in vitro experimentation purposes only. They are not for human or animal consumption of any kind, nor for medical, veterinary, diagnostic or therapeutic use.</p>
+        <nav aria-label="Legal">
+          <a href="faq.html#research-use">Terms of service</a>
+          <a href="faq.html#research-use">Privacy policy</a>
+          <a href="faq.html#shipping">Return policy</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+</body>
+</html>
