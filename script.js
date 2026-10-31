@@ -83,6 +83,12 @@
     document.querySelectorAll("[data-cart-count]").forEach(function (node) {
       node.textContent = String(count);
       node.classList.toggle("is-empty", count === 0);
+
+      // Keep the cart link's spoken name in sync ("Cart, 3 items")
+      var link = node.closest(".cart");
+      if (link) {
+        link.setAttribute("aria-label", count === 0 ? "Cart, empty" : "Cart, " + count + " items");
+      }
     });
   }
 
@@ -134,31 +140,12 @@
     }, 2600);
   }
 
-  /* ---------- Product card markup ---------- */
-  function productCard(product) {
-    return (
-      '<li class="product-card">' +
-      '<div class="product-card__media">' +
-      '<img src="' + product.image + '" width="800" height="800" loading="lazy" alt="' +
-      product.name + ' research vial">' +
-      "</div>" +
-      '<div class="product-card__body">' +
-      '<p class="product-card__cat">' + product.category + "</p>" +
-      '<h3 class="product-card__name"><a href="product.html?id=' + product.id + '">' +
-      product.name + "</a></h3>" +
-      '<p class="product-card__price"><strong>' + money(product.price) + "</strong> · " +
-      product.size + "</p>" +
-      '<button class="btn btn--outline" type="button" data-add-to-cart data-id="' +
-      product.id + '">Add to cart</button>' +
-      "</div></li>"
-    );
-  }
-
   /* ---------- Shop page ---------- */
   function setupShop() {
     var grid = document.querySelector("[data-shop-grid]");
     if (!grid) return;
 
+    var cards = Array.prototype.slice.call(grid.querySelectorAll(".product-card"));
     var search = document.querySelector("[data-shop-search]");
     var filterWrap = document.querySelector("[data-shop-filters]");
     var count = document.querySelector("[data-shop-count]");
@@ -200,7 +187,11 @@
       if (first) first.classList.add("is-active");
     }
 
-    function matches(product) {
+    // The cards are already in the HTML (so the page paints complete);
+    // filtering only hides and shows them.
+    function matches(card) {
+      var product = findProduct(card.getAttribute("data-id"));
+      if (!product) return false;
       var inCategory = state.category === "All" || product.category === state.category;
       var haystack = (product.name + " " + product.category + " " + product.size).toLowerCase();
       var inSearch = !state.q || haystack.indexOf(state.q.toLowerCase()) !== -1;
@@ -208,12 +199,16 @@
     }
 
     function draw() {
-      var results = catalog.filter(matches);
-      grid.innerHTML = results.map(productCard).join("");
+      var visible = 0;
+      cards.forEach(function (card) {
+        var show = matches(card);
+        card.hidden = !show;
+        if (show) visible += 1;
+      });
       if (count) {
-        count.textContent = results.length + (results.length === 1 ? " product" : " products");
+        count.textContent = visible + (visible === 1 ? " product" : " products");
       }
-      if (empty) empty.hidden = results.length > 0;
+      if (empty) empty.hidden = visible > 0;
     }
 
     if (search) {
@@ -227,6 +222,16 @@
   }
 
   /* ---------- Product page ---------- */
+  function injectJsonLd(id, data) {
+    var old = document.getElementById(id);
+    if (old) old.remove();
+    var tag = document.createElement("script");
+    tag.type = "application/ld+json";
+    tag.id = id;
+    tag.textContent = JSON.stringify(data);
+    document.head.appendChild(tag);
+  }
+
   function setupProduct() {
     var root = document.querySelector("[data-product]");
     if (!root) return;
@@ -272,6 +277,42 @@
     root.querySelector("[data-add-qty]").addEventListener("click", function () {
       addToCart(product.id, qty);
     });
+
+    // Structured data + share tags for this specific product
+    var url = window.location.href;
+    var image = new URL(product.image, window.location.href).href;
+
+    injectJsonLd("product-schema", {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: product.name,
+      image: [image],
+      description: product.blurb,
+      category: product.category,
+      brand: { "@type": "Brand", name: "LabSupply" },
+      offers: {
+        "@type": "Offer",
+        price: product.price.toFixed(2),
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock",
+        url: url
+      }
+    });
+
+    injectJsonLd("breadcrumb-schema", {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: new URL("index.html", window.location.href).href },
+        { "@type": "ListItem", position: 2, name: "Shop", item: new URL("shop.html", window.location.href).href },
+        { "@type": "ListItem", position: 3, name: product.name }
+      ]
+    });
+
+    var desc = document.querySelector('meta[name="description"]');
+    if (desc) desc.setAttribute("content", product.blurb.slice(0, 155));
+    var ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute("content", product.name + " — LabSupply");
   }
 
   /* ---------- Cart page ---------- */
@@ -363,7 +404,13 @@
 
     if (totals.lines.length === 0) {
       summary.innerHTML = '<p class="lede">Your cart is empty. <a href="shop.html">Browse compounds</a>.</p>';
-      root.querySelector("form").hidden = true;
+      var submit = root.querySelector('form button[type="submit"]');
+      if (submit) {
+        submit.disabled = true;
+        submit.textContent = "Add a product first";
+        submit.style.opacity = "0.55";
+        submit.style.cursor = "not-allowed";
+      }
       return;
     }
 
