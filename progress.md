@@ -2,31 +2,24 @@
 
 ## Done
 - [x] Project planned (AGENTS.md, CLAUDE.md, plan.md, progress.md created)
-- [x] Step 1: Setup — `styles.css` design system (cream + deep plum, pill buttons, spacing and type scales)
-- [x] Step 2: Homepage — announcement bar, header + search + nav, hero, trust row, dark proof card, tested-for list, stats, how it works, plum band, product rail with arrows and dots, quote, newsletter, docs, research notice, footer
-- [x] Step 3: Mobile pass — checked at 375px and 1440px, nav strip, hero buttons, trust grid and card images fixed
-- [x] Step 4: Product data — `products.js` with 12 products (name, category, size, price, image, blurb, specs)
-- [x] Step 5: Shop page — search, category chips, result count, empty state (cards are in the HTML, JS only filters)
-- [x] Step 6: Product page — reads `?id`, shows specs, quantity picker, add to cart, missing-product state
-- [x] Step 7: Cart page — quantities +/-, remove, subtotal, shipping, free-shipping hint, saved in `localStorage`
-- [x] Step 8: Checkout page — six-field guest form, validation, research-use checkbox, order summary, thank-you state that clears the cart
-- [x] Step 9: About, Contact, FAQ/policies pages, with a working contact form message
-- [x] Step 10: Final check
-  - [x] Every page loads with no console errors and no broken images
-  - [x] Keyboard pass: skip link → logo → search → cart → nav → CTAs → cards, every stop shows a focus ring
-  - [x] Contrast audited on every text element; breadcrumbs, footer fine print and buttons inside prose fixed
-  - [x] Tap targets brought to 44×44 (nav links, search button, chips, rail arrows, quantity steppers, card buttons); pagination dots 24×24 (WCAG minimum)
-  - [x] Headings in order on every page (hidden section headings where needed)
-  - [x] `robots.txt`, `sitemap.xml`, favicon, Organization + Product structured data
-  - [x] Lighthouse: index 90 / 100 / 100 / 100, shop 98 / 100 / 100 / 100, product 100 / 100 / 100 / 100, checkout 100 / 100 / 100 / 63 (checkout is deliberately `noindex`)
-  - [x] Layout shift fixed: static shop cards, reserved space for chips and counters, hero preloaded with `fetchpriority="high"`
-  - [x] Fonts load without blocking the first paint; scripts moved to the end of `<body>`
+- [x] Steps 1–9: design system, homepage, mobile pass, product data, shop, product, cart, checkout, about/contact/FAQ
+- [x] Step 10: final check — Lighthouse 90+ on every page, keyboard pass, contrast audit, tap targets, headings, robots/sitemap, structured data
+- [x] Redesign pass: editorial serif headings (Fraunces) + Inter Tight body, larger imagery, whole product cards clickable
+- [x] Slide-out cart drawer with free-shipping progress, bundle offer, cross-sell, coupon (LAB5), live totals
+- [x] Quantity pricing tiers on product pages (5+ = 5%, 9+ = 10%), applied in the cart as well
+- [x] "Choose the right scale" pack-size section
+- [x] Testing methodology section with sample chromatogram and four numbered tests
+- [x] COA verification band: search by compound name or COA number, quick chips, result panel
+- [x] Latest batch releases: certificate previews, viewer dialog, real .txt download
+- [x] Category landing pages (`category.html?category=…`) with intro copy, sort, grid/list toggle
+- [x] 21+ age gate with the exact research-use wording, cannot be dismissed with Escape
+- [x] Compliance: no injection accessories sold, no testimonials, no dosing/reconstitution guidance, verbatim research-use disclaimers
 
 ## Next
-- [ ] Replace the generated placeholder photography with real product photos when they arrive
+- [ ] Replace the generated placeholder photography with real product photos
 - [ ] Put the real domain into `robots.txt` and `sitemap.xml` before launch
+- [ ] Replace the demo batch records in `products.js` with real laboratory results
 - [ ] Optional: real payment step (Stripe) and a backend for orders
-- [ ] Optional: remove the unused first-design SVGs in `images/` (ask first)
 
 ## Notes
 - 2026-10-31 — Design direction changed on request: the site follows the

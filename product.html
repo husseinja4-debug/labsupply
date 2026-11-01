@@ -9,8 +9,8 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet"></noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,9 +18,9 @@
 
   <div class="topbar">
     <div class="wrap topbar__inner">
-      <p class="topbar__rating">Rated <strong>4.9 / 5</strong> by 1,200+ labs <span class="topbar__stars" aria-hidden="true">★★★★★</span></p>
-      <p>Free US shipping over $199 · HPLC-MS verified, 99%+ purity</p>
-      <p class="topbar__note">For research use only</p>
+      <p class="topbar__rating">All products are for research use only, not for human use.</p>
+      <p class="topbar__ship">Free US shipping over $199 · HPLC-MS verified, 99%+ purity</p>
+      <p class="topbar__note">Third-party COAs on every batch</p>
     </div>
   </div>
 
@@ -44,11 +44,11 @@
         <a class="icon-btn" href="contact.html" aria-label="Account and support">
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
         </a>
-        <a class="cart" href="cart.html" aria-label="Cart">
+        <button class="cart" type="button" aria-label="Cart" data-open-cart>
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h1.8l1.9 9.4h9.6L20 7.2H7"/><circle cx="9.6" cy="19" r="1.4"/><circle cx="16.8" cy="19" r="1.4"/></svg>
           <span class="cart__label">Cart</span>
           <span class="cart__count is-empty" data-cart-count aria-live="polite" aria-label="Items in cart">0</span>
-        </a>
+        </button>
       </div>
     </div>
     <nav class="nav" aria-label="Main">
@@ -85,6 +85,32 @@
         <p class="product__price" data-product-price></p>
         <p class="product__text" data-product-blurb></p>
 
+        <ul class="prod-meta">
+          <li><span>Purity</span><strong data-meta-purity>≥ 99% by HPLC (third-party tested)</strong></li>
+          <li><span>Tested by</span><strong>Independent US analytical laboratory — see the certificate of analysis</strong></li>
+          <li><span>SKU</span><strong data-meta-sku>—</strong></li>
+        </ul>
+
+        <a class="btn btn--outline" href="faq.html#quality">Certificate of Analysis</a>
+
+        <div class="tiers" role="group" aria-label="Quantity pricing">
+          <div class="tiers__row tiers__row--head">
+            <span></span><span>Quantity</span><span>Discount</span><span>Price</span>
+          </div>
+          <label class="tiers__row">
+            <input type="radio" name="tier" value="1" data-tier checked>
+            <span>1 – 4</span><span>—</span><span data-tier-price>—</span>
+          </label>
+          <label class="tiers__row">
+            <input type="radio" name="tier" value="5" data-tier>
+            <span>5 – 8</span><span>5%</span><span data-tier-price>—</span>
+          </label>
+          <label class="tiers__row">
+            <input type="radio" name="tier" value="9" data-tier>
+            <span>9 +</span><span>10%</span><span data-tier-price>—</span>
+          </label>
+        </div>
+
         <div class="product__buy">
           <div class="qty">
             <button type="button" data-qty-minus aria-label="Decrease quantity">−</button>
@@ -96,8 +122,31 @@
 
         <dl class="specs" data-product-specs></dl>
 
+        <div class="doc-panel">
+          <h2>Batch documentation</h2>
+          <ul>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Certificate of analysis, matched to the lot number
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Safety data sheet for every compound
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <a href="faq.html#quality">How batch testing works</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="compliance">
+          <strong>Research use only — not for human use.</strong>
+          We cannot provide dosing, reconstitution, or administration guidance. Every compound is supplied for in vitro laboratory research by qualified professionals and is not for human or veterinary consumption, diagnosis, treatment or household use.
+        </div>
+
         <div class="notice-box">
-          <strong>For research use only.</strong> Not for human or animal consumption, diagnosis, treatment or household use. Sold to qualified researchers and institutions.
+          <strong>For research use only.</strong> All products sold on this website are intended for laboratory research, analytical, and in vitro experimentation purposes only and are not for human or animal consumption of any kind.
         </div>
       </div>
     </div>
@@ -108,6 +157,13 @@
         It may have been renamed or withdrawn. <a href="shop.html">Browse all compounds</a> to find it.
       </div>
     </div>
+
+    <section class="related" data-related-wrap hidden>
+      <div class="wrap">
+        <h2>Related compounds</h2>
+        <ul class="product-grid" data-related></ul>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
@@ -146,10 +202,10 @@
           <div class="footer__col">
             <h3>Browse categories</h3>
             <ul>
-              <li><a href="shop.html#categories">Compound blends</a></li>
-              <li><a href="shop.html#categories">Copper compounds</a></li>
-              <li><a href="shop.html#categories">Bioregulators</a></li>
-              <li><a href="shop.html#categories">Cofactors &amp; coenzymes</a></li>
+              <li><a href="category.html?category=Blends">Compound blends</a></li>
+              <li><a href="category.html?category=Copper%20compounds">Copper compounds</a></li>
+              <li><a href="category.html?category=Research%20compounds">Research compounds</a></li>
+              <li><a href="category.html?category=Cofactors%20%26%20coenzymes">Cofactors &amp; coenzymes</a></li>
               <li><a href="shop.html">Shop all</a></li>
             </ul>
           </div>
@@ -186,7 +242,7 @@
       </div>
       <div class="footer__bottom">
         <p>© 2026 LabSupply. All rights reserved.</p>
-        <p class="footer__legal">Disclaimer: all products sold on this website are intended for laboratory research, analytical and in vitro experimentation purposes only. They are not for human or animal consumption of any kind, nor for medical, veterinary, diagnostic or therapeutic use.</p>
+        <p class="footer__legal">Disclaimer: All products sold on this website are intended for laboratory research, analytical, and in vitro experimentation purposes only. These materials are not for human or animal consumption of any kind, nor are they intended for medical, veterinary, diagnostic, or therapeutic use. LabSupply is a specialized chemical supplier and is not a compounding pharmacy or chemical compounding facility as defined under 503A of the Federal Food, Drug, and Cosmetic Act, nor is it an outsourcing facility as defined under 503B of the Federal Food, Drug, and Cosmetic Act. None of the products or statements on this website, or in any third-party content, links, or websites referenced by LabSupply, have been evaluated by the US Food and Drug Administration (FDA). Nothing on this site should be construed as medical advice, dosing, or administration guidance, and any content distributed or referenced by LabSupply is general scientific reference for qualified researchers only. LabSupply maintains the absolute discretion to restrict or refuse fulfillment to any individual who does not meet our criteria for qualified research personnel. By completing a purchase, you verify that you are 21 or older and a qualified researcher or institution, agree to handle these materials with professional care under institutional safety protocols and not for human or veterinary use, agree not to resell or transfer the materials, assume all inherent risks associated with possession, storage, and use, and indemnify and hold harmless LabSupply, its officers and affiliates, against any claims, damages, or liability arising therefrom, in accordance with our Terms of Service accepted at account creation and purchase.</p>
         <nav aria-label="Legal">
           <a href="faq.html#research-use">Terms of service</a>
           <a href="faq.html#research-use">Privacy policy</a>

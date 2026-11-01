@@ -191,19 +191,30 @@ window.PRODUCTS = [
   },
   {
     id: "12",
-    name: "Bacteriostatic Water",
+    name: "Glass Sample Vials",
     category: "Laboratory supplies",
-    size: "30 mL",
+    size: "10 mL · pack of 50",
     price: 18,
     image: "images/vial-02.webp",
     blurb:
-      "Sterile bacteriostatic water for laboratory reconstitution, sealed with a butyl stopper and supplied with a batch release note.",
+      "Clear borosilicate sample vials with screw caps for storing and transporting laboratory samples. Supplied clean and ready for labelling.",
     specs: {
-      Grade: "Sterile, preservative 0.9% benzyl alcohol",
-      Volume: "30 mL",
-      Form: "Clear solution",
-      Storage: "15–25 °C, upright",
-      Documentation: "Batch release note"
+      Material: "Borosilicate glass, 3.3",
+      Volume: "10 mL",
+      Closure: "Screw cap with PTFE liner",
+      Pack: "50 vials",
+      Documentation: "Materials certificate included"
     }
   }
 ];
+
+/* Batch records: one certificate of analysis per lot.
+   Demo data — replace with real laboratory results before launch. */
+window.PRODUCTS.forEach(function (product, index) {
+  product.batch = {
+    coa: String(2610200100 + (index + 1) * 7),
+    lot: "PH-L" + String(product.id).padStart(3, "0") + "-04" + String(8 + index),
+    reported: "10/21/2026",
+    purity: (98.7 + (index % 5) * 0.28).toFixed(2)
+  };
+});
