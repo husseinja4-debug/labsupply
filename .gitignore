@@ -1,10 +1,127 @@
-# Things that should never be saved in the project history
+# ============================================================================
+# Ordyn — what never goes into git
+#
+# The rule: if it is a secret, a screenshot, or a temporary file, it stays on
+# your machine. The site itself (HTML, CSS, JS, and the product photography in
+# images/) is meant to be tracked — do not add broad rules that would swallow it.
+# ============================================================================
 
-# Windows / macOS clutter
+# --- Secrets ----------------------------------------------------------------
+# Environment files. Keep a template (.env.example) if you need to share keys.
+.env
+.env.*
+*.env
+!.env.example
+secrets/
+secrets.*
+*.secret
+credentials.json
+service-account*.json
+google-services.json
+.netrc
+
+# Keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.cert
+id_rsa*
+id_ed25519*
+*.ppk
+
+# Local tool credentials
+.aws/
+.ssh/
+.gnupg/
+.vercel/
+.netlify/
+.wrangler/
+.firebase/
+
+# Payment / platform keys pasted into scratch files while testing
+*apikey*
+*api-key*
+*api_key*
+*secret-key*
+*secret_key*
+*access-token*
+*access_token*
+*private-key*
+
+# --- Screenshots and page captures -----------------------------------------
+# Product photography lives in images/ and is tracked. Test captures do not.
+screenshots/
+screenshot/
+captures/
+*.screenshot.png
+screenshot-*.png
+screenshot-*.jpg
+Screenshot-*.png
+screen-*.png
+capture-*.png
+page-*.png
+*-1440.png
+*-1280.png
+*-1024.png
+*-768.png
+*-390.png
+*-375.png
+*-full.png
+*-top.png
+
+# --- Temporary files --------------------------------------------------------
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+*.swp
+*~
+tmp/
+temp/
+.tmp/
+_shot*.html
+_measure*.html
+_mobile*.html
+_grade*.html
+_grade*.ps1
+_rebrand*.ps1
+_cards.ps1
+_house.ps1
+_polish.ps1
+_t.html
+
+# --- Logs and caches --------------------------------------------------------
+*.log
+npm-debug.log*
+.cache/
+.parcel-cache/
+.sass-cache/
+
+# --- Dependencies and build output -----------------------------------------
+# This site has no build step, but ignore these in case tooling is added.
+node_modules/
+dist/
+build/
+out/
+coverage/
+
+# --- Editors and operating systems -----------------------------------------
 Thumbs.db
+ehthumbs.db
 desktop.ini
 .DS_Store
+.vscode/
+.idea/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
 
-# Logs and temporary files
-*.log
-*.tmp
+# --- Python / local tooling -------------------------------------------------
+__pycache__/
+*.pyc
+.venv/
+venv/
