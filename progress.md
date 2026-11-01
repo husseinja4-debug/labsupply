@@ -1,6 +1,45 @@
-# progress.md — LabSupply
+# progress.md — Ordyn
 
-**Status:** the full site is built, tested and saved. What is left is content (real photos, real lab data) and going live (domain, payments, hosting).
+**Status:** the site is built and running on the Ordyn brand; everything below the
+"Rebrand to Ordyn" section documents the earlier LabSupply build and is kept as a
+record of what the pages can do.
+
+---
+
+## Rebrand to Ordyn (current)
+
+Source of truth: `../../brand/brand-guide.md` (v1.1).
+
+### Done
+- [x] `styles.css` rewritten to the Ordyn system: bone/white/ink at 70/20/10, Lab Blue
+      for actions only, Inter Tight / Inter / IBM Plex Mono, spacing and radius tokens,
+      1px borders with shadow on hover only, 150/250/400ms motion, reduced-motion
+- [x] Logo: measurement mark as inline SVG, wordmark set as `mark + "rdyn"` with the
+      full name in the `aria-label`; favicon rebuilt from the symbol alone
+- [x] Name, titles, meta, Open Graph, structured data and email moved to Ordyn /
+      ordyn.example
+- [x] Navigation cut from seven links to the five the guide allows
+- [x] Footer disclaimer replaced with the approved two-paragraph copy; copyright line
+      reads "© 2026, Ordyn. All rights reserved."
+- [x] Product cards carry a catalogue number (`ORD-0001` …), a research-use line under
+      the price, and mono pricing — on the home rail, on `shop.html` and on every
+      JS-rendered grid
+- [x] Product page: catalogue-number eyebrow, research-use line beside the price, dark
+      mono specification panel
+- [x] Home page rebuilt to the brand (hero on ink, trust strip, catalogue, batch-record
+      panel with chromatogram, certificate lookup, CTA band, documentation, compliance,
+      batch notes)
+- [x] Fixed: closed `<dialog>` elements rendering on load; horizontal overflow from
+      nowrap top-bar text and grid children that could not shrink
+- [x] Verified in Chrome at 1440 and 390: home, shop, product, cart, about, support
+
+### Next
+- [ ] Story, mission and values are still not supplied; the About copy is the old one
+      and needs rewriting in the Ordyn voice once those are written
+- [ ] Real product photography at the brand's cool grade (current set is placeholder)
+- [ ] Legal review of the footer disclaimer, especially the 503A/503B paragraph
+- [ ] Domain, payments, hosting before launch
+- [ ] Optional: dark-mode pass using `[data-theme="dark"]`, already wired in the tokens
 
 ---
 

@@ -30,15 +30,21 @@
     return node;
   }
 
+  /* Ordyn catalogue number — the eyebrow on every card and spec panel. */
+  function catalogNo(product) {
+    return "ORD-" + String(product.id).padStart(4, "0");
+  }
+
   function productCard(product) {
     return (
       '<li class="product-card">' +
       '<div class="product-card__media"><img src="' + product.image +
-      '" width="800" height="800" loading="lazy" alt="' + product.name + ' research vial"></div>' +
+      '" width="800" height="800" loading="lazy" alt="' + product.name + " " + product.size + ' vial"></div>' +
       '<div class="product-card__body">' +
-      '<p class="product-card__cat">' + product.category + "</p>" +
+      '<p class="product-card__cat">' + catalogNo(product) + " · " + product.category + "</p>" +
       '<h3 class="product-card__name"><a href="product.html?id=' + product.id + '">' + product.name + "</a></h3>" +
       '<p class="product-card__price"><strong>' + money(product.price) + "</strong> · " + product.size + "</p>" +
+      '<p class="product-card__ruo">For research and educational use only. Not for human or veterinary use.</p>' +
       '<button class="btn btn--outline" type="button" data-add-to-cart data-id="' + product.id + '">Add to cart</button>' +
       "</div></li>"
     );
@@ -66,7 +72,7 @@
   /* ---------- Coupon ---------- */
   function readCoupon() {
     try {
-      return localStorage.getItem("labsupply.coupon.v1") || "";
+      return localStorage.getItem("ordyn.coupon.v1") || "";
     } catch (error) {
       return "";
     }
@@ -74,8 +80,8 @@
 
   function saveCoupon(code) {
     try {
-      if (code) localStorage.setItem("labsupply.coupon.v1", code);
-      else localStorage.removeItem("labsupply.coupon.v1");
+      if (code) localStorage.setItem("ordyn.coupon.v1", code);
+      else localStorage.removeItem("ordyn.coupon.v1");
     } catch (error) {
       /* ignore */
     }
@@ -311,7 +317,7 @@
       return;
     }
 
-    document.title = product.name + " — LabSupply";
+    document.title = product.name + " — Ordyn";
     root.querySelector("[data-product-image]").src = product.image;
     root.querySelector("[data-product-image]").alt = product.name + " research vial";
     root.querySelector("[data-product-name]").textContent = product.name;
@@ -333,7 +339,7 @@
     var qty = 1;
 
     var sku = root.querySelector("[data-meta-sku]");
-    if (sku) sku.textContent = "P-" + String(product.id).padStart(3, "0");
+    if (sku) sku.textContent = catalogNo(product);
     var purity = root.querySelector("[data-meta-purity]");
     if (purity && product.specs && product.specs.Purity) purity.textContent = product.specs.Purity + " (third-party tested)";
 
@@ -899,14 +905,14 @@
     dialog.innerHTML =
       '<div class="age-gate__inner">' +
       '<p class="kicker">Researcher verification</p>' +
-      '<h2 id="age-gate-title">Are you 21 or Older</h2>' +
-      "<p>Our products are crafted for research and for investigative purposes and are not suitable for direct human consumption or consumers, nor are they intended for clinical or therapeutic use. The statements and products listed on this website are not intended to diagnose, treat, cure, or prevent any disease</p>" +
-      '<p class="age-gate__q">Are you over 21 years of age?</p>' +
+      '<h2 id="age-gate-title">Confirm your age</h2>' +
+      "<p>Ordyn supplies laboratory products for research, teaching and study. They are not for human or veterinary consumption, and nothing here is intended to diagnose, treat or prevent any condition.</p>" +
+      '<p class="age-gate__q">Are you 21 or older?</p>' +
       '<div class="age-gate__actions">' +
-      '<button class="btn btn--solid btn--block" type="button" data-age-yes>I agree &amp; enter</button>' +
+      '<button class="btn btn--solid btn--block" type="button" data-age-yes>Enter the site</button>' +
       '<button class="btn btn--outline btn--block" type="button" data-age-no>I am under 21</button>' +
       "</div>" +
-      '<p class="age-gate__denied" data-age-denied hidden>You must be 21 or older to enter this site. These products are supplied for laboratory research only and are not for human consumption.</p>' +
+      '<p class="age-gate__denied" data-age-denied hidden>You must be 21 or older to enter. These products are supplied for laboratory research only.</p>' +
       "</div>";
     document.body.appendChild(dialog);
 

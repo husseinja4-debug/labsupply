@@ -11,17 +11,20 @@
 - The cart remembers its items after a refresh (it's saved in the browser with `localStorage`)
 
 ## Style
-- **Mood:** modern, dark, high-tech, precise
-- **Colors:**
-  - Background: `#0B0F14` (near-black)
-  - Cards/panels: `#141A22`
-  - Borders: `#232C38`
-  - Main text: `#E6EDF3`
-  - Muted text: `#8B98A5`
-  - Accent (buttons, links): `#2DD4BF` (teal)
-  - Warning/notice: `#F59E0B` (amber)
-- **Fonts (Google Fonts):** "Space Grotesk" for headings, "Inter" for body text
-- **Feel:** rounded corners (8px), thin borders, soft teal glow when you hover a button, lots of empty space
+The visual system lives in **`../../brand/brand-guide.md`** and is implemented in
+`styles.css`. Do not restyle from memory or from the old plan.
+
+- **Name:** Ordyn (pronounced OR-din). Wordmark is lowercase `ordyn`, first "o"
+  replaced by the measurement mark.
+- **Mood ratio:** ~70% warm neutral (bone `#FAF9F6`), ~20% white + Lab Blue
+  (`#2F5BEA`, actions only), ~10% dark ink (`#0B0E13`: hero, spec panels, CTA band,
+  footer).
+- **Fonts:** Inter Tight 600 (headings), Inter 400/500 (body), IBM Plex Mono
+  (eyebrows, catalog numbers, specs, prices). Loaded once in `styles.css`.
+- **Rules that never bend:** one primary button per view, 1px borders with no card
+  shadow at rest, 96px/64px section padding, radii 6/10/16, research-use badge on every
+  product, and the footer disclaimer from the brand guide.
+- The old teal / Space Grotesk / dark-first direction is retired. Do not reintroduce it.
 
 ## Pages and sections
 

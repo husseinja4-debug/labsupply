@@ -4,4 +4,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://labsupply.example/sitemap.xml
+Sitemap: https://ordyn.example/sitemap.xml

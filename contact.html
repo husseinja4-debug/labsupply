@@ -3,14 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Contact LabSupply — Orders, COAs and Procurement</title>
+  <title>Contact Ordyn — Orders, COAs and Procurement</title>
   <meta name="description" content="Ask about a batch, request a COA or set up a school purchase order. US-based support, one business day reply.">
-  <meta name="theme-color" content="#FAF7F2">
+  <meta name="theme-color" content="#FAF9F6">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,7 +16,7 @@
 
   <div class="topbar">
     <div class="wrap topbar__inner">
-      <p class="topbar__rating">All products are for research use only, not for human use.</p>
+      <p class="topbar__rating">For research and educational use only. Not for human or veterinary use.</p>
       <p class="topbar__ship">Free US shipping over $199 · HPLC-MS verified, 99%+ purity</p>
       <p class="topbar__note">Third-party COAs on every batch</p>
     </div>
@@ -26,12 +24,11 @@
 
   <header class="header">
     <div class="wrap header__row">
-      <a class="brand" href="index.html">
+      <a class="brand" href="index.html" aria-label="Ordyn - home">
         <span class="brand__mark" aria-hidden="true">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 3h5M10.5 3v6.5L5.6 18.2A2 2 0 0 0 7.4 21h9.2a2 2 0 0 0 1.8-2.8L13.5 9.5V3"/><path d="M8 15.5h8"/></svg>
+          <svg viewBox="0 0 100 100" width="22" height="22" fill="none" focusable="false" aria-hidden="true"><circle cx="50" cy="50" r="37" stroke="currentColor" stroke-width="11.5"/><line x1="13.75" y1="57.4" x2="86.25" y2="57.4" stroke="#2F5BEA" stroke-width="4.5"/></svg>
         </span>
-        <span>LabSupply</span>
-        <span class="brand__sub">Research</span>
+        <span aria-hidden="true">rdyn</span>
       </a>
       <form class="search" role="search" action="shop.html" method="get">
         <label class="visually-hidden" for="site-search">Products search</label>
@@ -51,13 +48,11 @@
         </button>
       </div>
     </div>
-    <nav class="nav" aria-label="Main">
+        <nav class="nav" aria-label="Main">
       <div class="wrap nav__inner">
         <a href="shop.html">Shop compounds</a>
-        <a href="shop.html#categories">Browse categories</a>
-        <a href="faq.html#quality">Verify a COA</a>
-        <a href="faq.html#quality">Test results</a>
-        <a href="faq.html">Support</a>
+        <a href="shop.html#categories">Categories</a>
+        <a href="faq.html#quality">COA library</a>
         <a href="about.html">About</a>
         <a href="contact.html" aria-current="page">Contact</a>
       </div>
@@ -118,7 +113,7 @@
         <div class="summary">
           <h2>Direct details</h2>
           <div class="summary__rows">
-            <div class="summary__row"><span>Email</span><span>hello@labsupply.example</span></div>
+            <div class="summary__row"><span>Email</span><span>hello@Ordyn.example</span></div>
             <div class="summary__row"><span>Phone</span><span>+1 (614) 555-0148</span></div>
             <div class="summary__row"><span>Hours</span><span>Mon–Fri, 9am–5pm ET</span></div>
             <div class="summary__row"><span>Warehouse</span><span>Columbus, Ohio</span></div>
@@ -131,7 +126,7 @@
 
   <footer class="footer">
     <div class="wrap">
-      <h2 class="visually-hidden">Why shop with LabSupply</h2>
+      <h2 class="visually-hidden">Why shop with Ordyn</h2>
       <ul class="footer__features">
         <li class="footer__feature">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h10v9H3z"/><path d="M13 10h4l4 3.5V16h-8"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>
@@ -152,14 +147,14 @@
       </ul>
       <div class="footer__main">
         <div class="footer__brand">
-          <a class="brand" href="index.html">
-            <span class="brand__mark" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 3h5M10.5 3v6.5L5.6 18.2A2 2 0 0 0 7.4 21h9.2a2 2 0 0 0 1.8-2.8L13.5 9.5V3"/><path d="M8 15.5h8"/></svg>
-            </span>
-            <span>LabSupply</span>
-          </a>
-          <p>LabSupply is your source for high-purity research compounds in the USA. Every batch is third-party tested and HPLC-MS verified, with COAs published for every lot.</p>
-          <p><a href="mailto:hello@labsupply.example">hello@labsupply.example</a></p>
+                <a class="brand" href="index.html" aria-label="Ordyn - home">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 100 100" width="22" height="22" fill="none" focusable="false" aria-hidden="true"><circle cx="50" cy="50" r="37" stroke="currentColor" stroke-width="11.5"/><line x1="13.75" y1="57.4" x2="86.25" y2="57.4" stroke="#2F5BEA" stroke-width="4.5"/></svg>
+        </span>
+        <span aria-hidden="true">rdyn</span>
+      </a>
+          <p>Ordyn supplies laboratory products and high-purity reagents for research and education. Every batch ships with its certificate of analysis, and the specification you read here is the one you receive.</p>
+          <p><a href="mailto:hello@Ordyn.example">hello@Ordyn.example</a></p>
         </div>
         <div class="footer__cols">
           <div class="footer__col">
@@ -204,8 +199,9 @@
         </div>
       </div>
       <div class="footer__bottom">
-        <p>© 2026 LabSupply. All rights reserved.</p>
-        <p class="footer__legal">Disclaimer: All products sold on this website are intended for laboratory research, analytical, and in vitro experimentation purposes only. These materials are not for human or animal consumption of any kind, nor are they intended for medical, veterinary, diagnostic, or therapeutic use. LabSupply is a specialized chemical supplier and is not a compounding pharmacy or chemical compounding facility as defined under 503A of the Federal Food, Drug, and Cosmetic Act, nor is it an outsourcing facility as defined under 503B of the Federal Food, Drug, and Cosmetic Act. None of the products or statements on this website, or in any third-party content, links, or websites referenced by LabSupply, have been evaluated by the US Food and Drug Administration (FDA). Nothing on this site should be construed as medical advice, dosing, or administration guidance, and any content distributed or referenced by LabSupply is general scientific reference for qualified researchers only. LabSupply maintains the absolute discretion to restrict or refuse fulfillment to any individual who does not meet our criteria for qualified research personnel. By completing a purchase, you verify that you are 21 or older and a qualified researcher or institution, agree to handle these materials with professional care under institutional safety protocols and not for human or veterinary use, agree not to resell or transfer the materials, assume all inherent risks associated with possession, storage, and use, and indemnify and hold harmless LabSupply, its officers and affiliates, against any claims, damages, or liability arising therefrom, in accordance with our Terms of Service accepted at account creation and purchase.</p>
+        <p>© 2026, Ordyn. All rights reserved.</p>
+                <p class="footer__legal"><strong>Disclaimer:</strong> All products, reagents, and materials available on this site are designated for research use only. These items are supplied exclusively for laboratory-based analytical, educational, and scientific work by qualified professionals and institutions. They are not intended for human or veterinary administration, and no diagnostic, therapeutic, or clinical application is implied, warranted, or permitted.</p>
+        <p class="footer__legal">Ordyn operates solely as a specialized laboratory supply company. It does not operate as a compounding pharmacy, a chemical compounding facility as defined under Section 503A of the Federal Food, Drug, and Cosmetic Act, or an outsourcing facility under Section 503B of the same Act. Our operations are limited to the distribution of laboratory products and high-purity reagents for the advancement of scientific research and education in a controlled research environment.</p>
         <nav aria-label="Legal">
           <a href="faq.html#research-use">Terms of service</a>
           <a href="faq.html#research-use">Privacy policy</a>

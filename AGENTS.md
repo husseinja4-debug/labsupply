@@ -4,8 +4,9 @@ Rules for anyone (human or AI) working on this project.
 
 ## Before every task
 1. Read `../../Aboutme.md` to understand who I am.
-2. Read `plan.md` and follow it. Build in the order it lists.
-3. Read `progress.md` to see what's done and what's next.
+2. Read `../../brand/brand-guide.md` before any design or writing work.
+3. Read `plan.md` and follow it. Build in the order it lists.
+4. Read `progress.md` to see what's done and what's next.
 
 ## Execute, don't stall
 - When given a plan or an instruction, **execute it. Start building right away.**
@@ -129,23 +130,23 @@ How to make it look professional. Based on *Refactoring UI* (Wathan & Schoger) a
 - When in doubt, add more white space. Crowded looks cheap, spacious looks premium.
 
 ## Typography
-- Two fonts max: **Space Grotesk** for headings, **Inter** for body.
-- Use a fixed size scale: **12, 14, 16, 18, 20, 24, 30, 36, 48, 60px**. No random sizes.
-- Body text is at least 16px, line-height about 1.5, lines no wider than about 65–75 characters.
-- Headings: tighter line-height (about 1.1–1.2) and a bit of negative letter-spacing on big sizes.
+- Three fonts, three jobs: **Inter Tight** (headings), **Inter** (body), **IBM Plex Mono** (eyebrows, specs, prices). See `../../brand/brand-guide.md`.
+- Use the size scale in the brand guide: 12, 16, 20, 24, 36, 48, 64px. No random sizes.
+- Body text is at least 16px, line-height 1.6, lines no wider than 680px.
+- Headings: sentence case, tight line-height, negative letter-spacing.
 
 ## Color
-- Stick to the palette in `plan.md`. Each color can have lighter/darker shades, but don't invent new colors.
-- **One accent color (teal)**, used only for what you want clicked: main buttons, links, active states.
-- On dark backgrounds, make cards slightly lighter than the page instead of using heavy borders.
-- Check text contrast (4.5:1 minimum). Muted gray on dark is the usual failure.
+- Stick to the tokens in `styles.css`, which come from `../../brand/brand-guide.md`. Do not invent colours.
+- **Lab Blue `#2F5BEA`, used only for what you want clicked.** One primary button per view.
+- On dark panels, make cards slightly lighter than the page instead of using heavy borders.
+- Check text contrast (4.5:1 minimum). Muted grey on dark is the usual failure.
 
 ## Depth and polish
-- Small shadow or glow means slightly raised (cards). Larger means floating (menus, popups).
+- Cards are separated by 1px borders. No shadow until hover.
 - Prefer background differences and spacing over lots of borders.
 - Every clickable thing has hover, focus, and active states.
-- Keep animations subtle and quick (150–250ms).
-- Consistent corner radius everywhere (8px).
+- Keep animations subtle and quick (150–400ms).
+- Radii: 6px small, 10px buttons, 16px cards. Nothing else.
 
 ## Consistency
 - Reuse the same button, card, and input styles everywhere, built once in `styles.css`.
