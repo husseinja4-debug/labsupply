@@ -1,4 +1,4 @@
-/* LabSupply — shared behaviours for every page.
+/* Ordyn — shared behaviours for every page.
    Cart storage, the product rail, shop filters, product, cart and checkout. */
 
 (function () {
@@ -44,6 +44,7 @@
       '<p class="product-card__cat">' + catalogNo(product) + " · " + product.category + "</p>" +
       '<h3 class="product-card__name"><a href="product.html?id=' + product.id + '">' + product.name + "</a></h3>" +
       '<p class="product-card__price"><strong>' + money(product.price) + "</strong> · " + product.size + "</p>" +
+      '<p class="ruo-badge">Research use only</p>' +
       '<p class="product-card__ruo">For research and educational use only. Not for human or veterinary use.</p>' +
       '<button class="btn btn--outline" type="button" data-add-to-cart data-id="' + product.id + '">Add to cart</button>' +
       "</div></li>"
@@ -390,7 +391,7 @@
       image: [image],
       description: product.blurb,
       category: product.category,
-      brand: { "@type": "Brand", name: "LabSupply" },
+      brand: { "@type": "Brand", name: "Ordyn" },
       offers: {
         "@type": "Offer",
         price: product.price.toFixed(2),
@@ -413,7 +414,7 @@
     var desc = document.querySelector('meta[name="description"]');
     if (desc) desc.setAttribute("content", product.blurb.slice(0, 155));
     var ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) ogTitle.setAttribute("content", product.name + " — LabSupply");
+    if (ogTitle) ogTitle.setAttribute("content", product.name + " — Ordyn");
 
     // Related compounds: same category first, then the rest
     var relatedWrap = document.querySelector("[data-related-wrap]");
@@ -965,7 +966,7 @@
       "See <a href=\"faq.html#quality\">how batch testing works</a> or <a href=\"shop.html\">browse the full catalogue</a>."
     ],
     "Cofactors & coenzymes": [
-      "Cofactors and coenzymes are non-protein compounds involved in enzymatic reactions. This category groups the compounds in the LabSupply catalogue that act as, or modulate, these biochemical cofactors.",
+      "Cofactors and coenzymes are non-protein compounds involved in enzymatic reactions. This category groups the compounds in the Ordyn catalogue that act as, or modulate, these biochemical cofactors.",
       "The collection includes NAD+, a pyridine dinucleotide coenzyme supplied as a lyophilised powder for in-vitro work. Every lot is third-party tested and documented.",
       "Review the published analytical data in our <a href=\"faq.html#quality\">COA library</a> or <a href=\"shop.html\">browse the full catalogue</a>."
     ],
@@ -997,7 +998,7 @@
 
     if (titleEl) titleEl.textContent = category;
     if (crumb) crumb.textContent = category;
-    document.title = category + " — LabSupply";
+    document.title = category + " — Ordyn";
 
     if (intro) {
       var paragraphs = CATEGORY_COPY[category] || [];
@@ -1005,7 +1006,7 @@
         paragraphs.map(function (text) {
           return "<p>" + text + "</p>";
         }).join("") +
-        '<p class="cat-intro__note">For laboratory and research use only. Not for human or animal consumption.</p>';
+        '<p class="cat-intro__note">For research and educational use only. Not for human or veterinary use.</p>';
     }
 
     function draw() {
@@ -1052,7 +1053,7 @@
     var b = product.batch || {};
     return [
       "CERTIFICATE OF ANALYSIS",
-      "LabSupply — for laboratory research use only",
+      "Ordyn — for research and educational use only",
       "",
       "Product: " + product.name + " (" + product.size + ")",
       "COA number: " + (b.coa || "—"),
@@ -1065,7 +1066,7 @@
       "Endotoxins (USP 85)  Pass",
       "Appearance           White lyophilised powder",
       "",
-      "Drug-free, not for human or animal consumption.",
+      "For research and educational use only. Not for human or veterinary use.",
       "Not for diagnostic, therapeutic or clinical use."
     ].join("\n");
   }
@@ -1075,7 +1076,7 @@
     var url = URL.createObjectURL(blob);
     var a = document.createElement("a");
     a.href = url;
-    a.download = "LabSupply-COA-" + (product.batch ? product.batch.coa : product.id) + ".txt";
+    a.download = "Ordyn-COA-" + (product.batch ? product.batch.coa : product.id) + ".txt";
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -1145,7 +1146,7 @@
         "<div><dt>Endotoxins (USP &lt;85&gt;)</dt><dd>Pass</dd></div>" +
         "<div><dt>Appearance</dt><dd>White lyophilised powder</dd></div>" +
         "</dl>" +
-        '<p class="coa-modal__note">For laboratory research use only. Not for human or animal consumption, diagnosis, treatment or household use.</p>' +
+        '<p class="coa-modal__note">For research and educational use only. Not for human or veterinary use.</p>' +
         '<div class="coa-modal__actions"><button class="btn btn--solid" type="button" data-coa-modal-download>Download certificate</button>' +
         '<a class="btn btn--outline" href="product.html?id=' + product.id + '">View product</a></div>';
 

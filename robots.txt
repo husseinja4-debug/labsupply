@@ -1,4 +1,4 @@
-# LabSupply — robots.txt
+# Ordyn — robots.txt
 # Replace the placeholder domain below with the real one before launch.
 
 User-agent: *

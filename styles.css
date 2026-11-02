@@ -246,12 +246,14 @@ dialog:not([open]) { display: none !important; }
    Top bar + header
    -------------------------------------------------------------------------- */
 
+/* Sentences, so set in the body face (mono is for data). The research-use line
+   is compliance copy: it never shrinks or truncates; the other two give way. */
 .topbar {
   background: var(--stone-100);
   border-bottom: 1px solid var(--stone-200);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.4;
   color: var(--stone-600);
 }
 .topbar__inner {
@@ -270,13 +272,18 @@ dialog:not([open]) { display: none !important; }
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.topbar .topbar__rating {
+  flex-shrink: 0;
+  white-space: normal;
+  overflow: visible;
+}
 .topbar__ship { display: none; }
 .topbar__note { display: none; }
 
 @media (min-width: 768px) {
   .topbar__ship { display: block; }
 }
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   .topbar__note { display: block; }
 }
 
@@ -1071,12 +1078,29 @@ dialog:not([open]) { display: none !important; }
 }
 .product-card__price strong { font-weight: 500; }
 
-.product-card__ruo {
+/* Brand guide A5: every product carries the badge and, beside the price, the
+   research-use sentence. The badge is the only uppercase compliance element. */
+.ruo-badge {
+  align-self: flex-start;
   margin: 0;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-alt);
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--text);
+}
+
+.product-card__ruo {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.4;
   color: var(--text-muted);
 }
 
@@ -1816,10 +1840,7 @@ dialog:not([open]) { display: none !important; }
 }
 .cat-intro p { color: var(--text-muted); font-size: 15px; }
 .cat-intro__note {
-  font-family: var(--font-mono) !important;
   font-size: 12px !important;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--text-muted) !important;
 }
 

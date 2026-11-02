@@ -60,8 +60,26 @@ Source of truth: `../../brand/brand-guide.md` (v1.1).
       the trust strip rendered as bare bullet lists, the specification panel stayed dark
       and the tabs stayed hidden. Bump the value whenever `styles.css` or `script.js`
       changes significantly.
+- [x] Brand audit must-fixes (2026-11-02), asset version bumped to `v=4`:
+      - Top bar: the research-use line no longer truncates (it was cut off with "…"
+        at 1440). Top bar set in Inter 12px; the third message shows from 1280px up
+      - Every product card and the product page carry a **RESEARCH USE ONLY** badge;
+        the research-use sentence is now plain sentence case, not mono capitals
+      - One research-use wording everywhere: the category note, the product-page
+        compliance box (the duplicate notice box was folded into it), the COA viewer
+        and the downloadable certificate
+      - "LabSupply" removed from page titles, share titles, product structured data,
+        category copy and the certificate download name
+      - Email is `hello@ordyn.example` (lowercase) on every page
+      - Demo certificates: reported purity now always sits above each product's
+        published minimum, and lot numbers run `-048, -049, -050…`
 
 ### Next
+- [ ] Phones: since the nav moved beside the cart, the nav is 501px wide at 375px and
+      the whole page can be dragged about 126px sideways
+- [ ] Remaining audit items: off-scale font sizes and spacing, body text under 16px,
+      mixed spelling (catalogue/catalog, fulfilment/fulfillment), numbers written as
+      words, title-case page titles
 - [ ] Story, mission and values are still not supplied; the About copy is the old one
       and needs rewriting in the Ordyn voice once those are written
 - [ ] Real product photography at the brand's cool grade (current set is placeholder)

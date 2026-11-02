@@ -1,4 +1,4 @@
-/* LabSupply — the product catalogue.
+/* Ordyn — the product catalogue.
    Every page reads this list, so prices and names only live in one place. */
 
 window.PRODUCTS = [
@@ -209,12 +209,15 @@ window.PRODUCTS = [
 ];
 
 /* Batch records: one certificate of analysis per lot.
-   Demo data — replace with real laboratory results before launch. */
+   Demo data — replace with real laboratory results before launch.
+   Reported purity always sits above the product's published minimum, so a
+   certificate never contradicts its own specification. */
 window.PRODUCTS.forEach(function (product, index) {
+  var minimum = parseFloat(String(product.specs.Purity || "").replace(/[^\d.]/g, "")) || 99;
   product.batch = {
     coa: String(2610200100 + (index + 1) * 7),
-    lot: "PH-L" + String(product.id).padStart(3, "0") + "-04" + String(8 + index),
+    lot: "PH-L" + String(product.id).padStart(3, "0") + "-" + String(48 + index).padStart(3, "0"),
     reported: "10/21/2026",
-    purity: (98.7 + (index % 5) * 0.28).toFixed(2)
+    purity: (minimum + 0.12 + (index % 5) * 0.17).toFixed(2)
   };
 });
