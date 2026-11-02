@@ -91,10 +91,14 @@ Source of truth: `../../brand/brand-guide.md` (v1.1).
       - Email is `hello@ordyn.example` (lowercase) on every page
       - Demo certificates: reported purity now always sits above each product's
         published minimum, and lot numbers run `-048, -049, -050…`
+- [x] No sideways scroll on phones (2026-11-02, stylesheet `v=5`). Checked on all 10
+      pages at 320, 375 and 1440px:
+      - Nav: `min-width: 0` on `.nav`, so the links scroll inside the strip instead of
+        stretching the page to 501px (the page could be dragged 126px sideways)
+      - Category toolbar: sort and grid/list buttons wrap instead of sticking out
+      - Home "Find your certificate" box: its column can now shrink at 320px
 
 ### Next
-- [ ] Phones: since the nav moved beside the cart, the nav is 501px wide at 375px and
-      the whole page can be dragged about 126px sideways
 - [ ] Remaining audit items: off-scale font sizes and spacing, body text under 16px,
       mixed spelling (catalogue/catalog, fulfilment/fulfillment), numbers written as
       words, title-case page titles

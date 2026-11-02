@@ -428,6 +428,9 @@ dialog:not([open]) { display: none !important; }
 .nav {
   order: 3;
   flex: 1 0 100%;
+  /* Without this the flex item grows to its links' full width and widens the page;
+     with it, the links scroll inside .nav__inner instead. */
+  min-width: 0;
   margin-inline: calc(var(--gutter) * -1);
   padding-inline: var(--gutter);
   border-top: 1px solid var(--stone-200);
@@ -1188,6 +1191,8 @@ dialog:not([open]) { display: none !important; }
 
 .coa__lookup {
   display: grid;
+  /* minmax(0, …) lets the single column shrink below its content on narrow phones */
+  grid-template-columns: minmax(0, 1fr);
   gap: 32px;
   padding: 32px;
   border: 1px solid var(--border);
@@ -1777,7 +1782,7 @@ dialog:not([open]) { display: none !important; }
   border-block: 1px solid var(--border);
   margin-bottom: 32px;
 }
-.shop__tools { display: flex; align-items: center; gap: 16px; }
+.shop__tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; min-width: 0; }
 .result-count { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); letter-spacing: 0.04em; margin: 0; }
 
 .sort { display: flex; align-items: center; gap: 8px; }
