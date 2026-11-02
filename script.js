@@ -128,7 +128,8 @@
     // 5% off when three or more different compounds are in the cart
     var bundle = lines.length >= 3 ? subtotal * 0.05 : 0;
     var couponCode = readCoupon();
-    var coupon = couponCode ? (subtotal - bundle) * 0.05 : 0;
+    var couponRate = couponCode === "WELCOME10" ? 0.10 : (couponCode ? 0.05 : 0);
+    var coupon = (subtotal - bundle) * couponRate;
     var shipping = subtotal === 0 || subtotal >= FREE_SHIPPING ? 0 : SHIPPING_COST;
     var total = subtotal - bundle - coupon + shipping;
     var tierSaving = lines.reduce(function (sum, line) {
@@ -865,12 +866,13 @@
       if (!code) {
         saveCoupon("");
         couponNote.textContent = "Coupon removed.";
-      } else if (code === "LAB5") {
+      } else if (code === "LAB5" || code === "WELCOME10") {
         saveCoupon(code);
-        couponNote.textContent = "LAB5 applied — an extra 5% off.";
+        couponNote.textContent = code + " applied — an extra " +
+          (code === "WELCOME10" ? "10%" : "5%") + " off.";
       } else {
         couponNote.classList.add("is-error");
-        couponNote.textContent = "That code is not recognised. Try LAB5.";
+        couponNote.textContent = "That code is not recognised. Try WELCOME10.";
         return;
       }
       draw();
@@ -894,7 +896,9 @@
     var KEY = "labsupply.age.v1";
     var accepted = false;
     try {
-      accepted = localStorage.getItem(KEY) === "yes" || sessionStorage.getItem(KEY) === "yes";
+      // Session only, so the gate greets each new visit rather than being remembered
+      // for months on a shared machine.
+      accepted = sessionStorage.getItem(KEY) === "yes";
     } catch (error) {
       accepted = false;
     }
@@ -1223,6 +1227,285 @@
     });
   }
 
+  /* ---------- Email offer — 10% for a sign-up ---------- */
+  function setupEmailOffer() {
+    var KEY = "ordyn.offer.v2";
+    var OFFER_CODE = "WELCOME10";
+
+    try {
+      if (localStorage.getItem(KEY)) return;
+    } catch (error) {
+      return; // storage blocked — do not nag on every page
+    }
+
+    var shown = false;
+
+    function remember() {
+      try { localStorage.setItem(KEY, "seen"); } catch (error) { /* ignore */ }
+    }
+
+    function build() {
+      if (shown) return;
+      shown = true;
+
+      var dialog = document.createElement("dialog");
+      dialog.className = "offer";
+      dialog.setAttribute("aria-labelledby", "offer-title");
+      dialog.innerHTML =
+        '<div class="offer__inner">' +
+        '<button class="offer__close" type="button" data-offer-close aria-label="Close">×</button>' +
+        '<p class="kicker">One-time offer</p>' +
+        '<h2 id="offer-title">Take 10% off your first order</h2>' +
+        '<p class="offer__copy">Join the batch notes list and we will send the code. One email when a lot is released, nothing else.</p>' +
+        '<form class="offer__form" data-offer-form novalidate>' +
+        '<label class="visually-hidden" for="offer-email">Email address</label>' +
+        '<input id="offer-email" name="email" type="email" placeholder="you@lab.org" autocomplete="email" required>' +
+        '<button class="btn btn--solid" type="submit">Send my code</button>' +
+        '</form>' +
+        '<p class="offer__note" data-offer-note role="status"></p>' +
+        '<p class="offer__fine">Research use only. The code applies at checkout and cannot be combined with LAB5.</p>' +
+        "</div>";
+      document.body.appendChild(dialog);
+
+      var note = dialog.querySelector("[data-offer-note]");
+      var input = dialog.querySelector("#offer-email");
+
+      function close() {
+        dialog.close();
+        dialog.remove();
+      }
+
+      dialog.querySelector("[data-offer-close]").addEventListener("click", function () {
+        remember();
+        close();
+      });
+
+      dialog.addEventListener("close", remember);
+
+      dialog.querySelector("[data-offer-form]").addEventListener("submit", function (event) {
+        event.preventDefault();
+        var value = input.value.trim();
+        var looksRight = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
+
+        note.classList.toggle("is-error", !looksRight);
+
+        if (!looksRight) {
+          note.textContent = "That email does not look right. Try name@lab.org.";
+          input.focus();
+          return;
+        }
+
+        remember();
+        note.textContent = "You are on the list. Use this code at checkout:";
+        var code = document.createElement("span");
+        code.className = "offer__code";
+        code.textContent = OFFER_CODE;
+        note.appendChild(document.createElement("br"));
+        note.appendChild(code);
+        dialog.querySelector(".offer__form").hidden = true;
+        input = null;
+      });
+
+      dialog.showModal();
+    }
+
+    window.setTimeout(build, 12000);
+
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > 1400) build();
+    }, { passive: true });
+  }
+
+  /* ---------- Support chat ---------- */
+  var CHAT_NAME = "Kit";
+
+  var CHAT_ANSWERS = [
+    {
+      match: /(dose|dosing|dosage|mg per|inject|reconstitut|administer|take it|human use|consume)/i,
+      reply: "I cannot advise on dosing, reconstitution or administration — that is outside what we are permitted to discuss. All compounds are sold for laboratory research only."
+    },
+    {
+      match: /(certificate|coa|purity|test|hplc|analysis|batch)/i,
+      reply: "Every lot ships with a certificate of analysis, matched to the lot number on the vial. You can look one up on the home page under “Verify a certificate”, or open the COA library."
+    },
+    {
+      match: /(ship|delivery|deliver|arrive|track|how long|lead time)/i,
+      reply: "Orders placed before 2pm ET leave the same day, tracked, and arrive in 2–3 business days. Shipping is free over $199; below that it is $12."
+    },
+    {
+      match: /(return|refund|damaged|broken|wrong item|missing)/i,
+      reply: "If a vial arrives damaged or is not what you ordered, email the lot number and a photo to hello@ordyn.example within 14 days and we replace it."
+    },
+    {
+      match: /(wholesale|bulk|volume|purchase order|invoice|net 30|institution|university|school)/i,
+      reply: "Institutions can order on a purchase order, invoiced net 30. Volume pricing starts at 5 units (5%) and 9 units (10%). The Wholesale page has the application form."
+    },
+    {
+      match: /(discount|coupon|code|promo|offer|cheaper|student)/i,
+      reply: "Use WELCOME10 for 10% off a first order, or LAB5 for 5%. Three different compounds in one cart also takes 5% off automatically."
+    },
+    {
+      match: /(pay|payment|card|visa|amex|secure|checkout)/i,
+      reply: "Checkout is card-based and guest checkout — no account needed. Institutions can be invoiced instead; mention it in the order notes."
+    },
+    {
+      match: /(storage|store|temperature|fridge|freezer|shelf life|expire)/i,
+      reply: "Storage is listed on every product page — most items are −20 °C, protected from light. The exact condition for your item is in its specification table."
+    },
+    {
+      match: /(solub|dissolve|water|buffer|dmso)/i,
+      reply: "Solubility is part of the published specification where we hold it. If a figure is not on the product page, we do not publish a guess — email us and we will check the batch record."
+    },
+    {
+      match: /(human|person|agent|real|bot|robot|who are you)/i,
+      reply: "I am " + CHAT_NAME + ", an assistant. I can answer questions about orders, certificates and shipping. For anything technical, a person replies from hello@ordyn.example within one business day."
+    },
+    {
+      match: /(hello|hi|hey|good morning|good afternoon)/i,
+      reply: "Hello. I am " + CHAT_NAME + ". Ask me about a certificate, shipping, returns or wholesale — or type “person” to reach the team."
+    },
+    {
+      match: /(thank|thanks|cheers|great|perfect)/i,
+      reply: "Any time. If something is still unclear, hello@ordyn.example reaches a person."
+    }
+  ];
+
+  var CHAT_FALLBACK =
+    "I do not have that one. Email hello@ordyn.example or use the contact form and a person replies within one business day.";
+
+  function setupSupportChat() {
+    var launcher = el("button");
+    launcher.className = "chat-launch";
+    launcher.type = "button";
+    launcher.setAttribute("aria-expanded", "false");
+    launcher.innerHTML =
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4L4 21l1.2-4.4A8.4 8.4 0 1 1 21 11.5z"/></svg>' +
+      '<span>Chat with ' + CHAT_NAME + "</span>";
+    document.body.appendChild(launcher);
+
+    var panel = el("section");
+    panel.className = "chat";
+    panel.hidden = true;
+    panel.setAttribute("aria-label", "Support chat with " + CHAT_NAME);
+    panel.innerHTML =
+      '<header class="chat__head">' +
+      '<span class="chat__avatar" aria-hidden="true">K</span>' +
+      '<span class="chat__who"><span class="chat__name">' + CHAT_NAME + "</span>" +
+      '<span class="chat__status">Support assistant · replies instantly</span></span>' +
+      '<button class="chat__close" type="button" data-chat-close aria-label="Close chat">×</button>' +
+      "</header>" +
+      '<div class="chat__log" data-chat-log role="log" aria-live="polite"></div>' +
+      '<div class="chat__quick" data-chat-quick></div>' +
+      '<form class="chat__form" data-chat-form>' +
+      '<label class="visually-hidden" for="chat-input">Your message</label>' +
+      '<input id="chat-input" type="text" placeholder="Ask about an order, COA or shipping" autocomplete="off">' +
+      '<button type="submit">Send</button>' +
+      "</form>";
+    document.body.appendChild(panel);
+
+    var log = panel.querySelector("[data-chat-log]");
+    var form = panel.querySelector("[data-chat-form]");
+    var input = panel.querySelector("#chat-input");
+    var quick = panel.querySelector("[data-chat-quick]");
+    var started = false;
+
+    function say(text, mine) {
+      var bubble = el("div", "chat__msg chat__msg--" + (mine ? "me" : "bot"));
+      bubble.textContent = text;
+      log.appendChild(bubble);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function answer(text) {
+      for (var i = 0; i < CHAT_ANSWERS.length; i += 1) {
+        if (CHAT_ANSWERS[i].match.test(text)) return CHAT_ANSWERS[i].reply;
+      }
+      return CHAT_FALLBACK;
+    }
+
+    function send(text) {
+      var clean = text.trim();
+      if (!clean) return;
+      say(clean, true);
+      window.setTimeout(function () { say(answer(clean), false); }, 320);
+    }
+
+    ["Certificates", "Shipping", "Returns", "Wholesale", "Discounts"].forEach(function (label) {
+      var chip = el("button");
+      chip.type = "button";
+      chip.textContent = label;
+      chip.addEventListener("click", function () { send(label); });
+      quick.appendChild(chip);
+    });
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      send(input.value);
+      input.value = "";
+    });
+
+    function open() {
+      panel.hidden = false;
+      launcher.setAttribute("aria-expanded", "true");
+      launcher.hidden = true;
+      if (!started) {
+        started = true;
+        say("Hi, I am " + CHAT_NAME + ". I can help with certificates, shipping, returns, wholesale and discount codes. What do you need?", false);
+      }
+      input.focus();
+    }
+
+    function close() {
+      panel.hidden = true;
+      launcher.hidden = false;
+      launcher.setAttribute("aria-expanded", "false");
+      launcher.focus();
+    }
+
+    launcher.addEventListener("click", open);
+    panel.querySelector("[data-chat-close]").addEventListener("click", close);
+    panel.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") close();
+    });
+  }
+
+  /* ---------- Wholesale application ---------- */
+  function setupWholesale() {
+    var form = document.querySelector("[data-wholesale-form]");
+    var status = document.querySelector("[data-wholesale-status]");
+    if (!form || !status) return;
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var ok = true;
+
+      form.querySelectorAll("[required]").forEach(function (field) {
+        var value = field.value.trim();
+        var valid = field.type === "checkbox" ? field.checked : value !== "";
+
+        if (field.type === "email" && value) {
+          valid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
+        }
+
+        var holder = field.closest(".field") || field.closest(".check");
+        if (holder) holder.classList.toggle("has-error", !valid);
+        if (!valid) ok = false;
+      });
+
+      status.hidden = false;
+      status.classList.toggle("is-error", !ok);
+
+      if (!ok) {
+        status.textContent = "Check the highlighted fields — institution, contact name, a valid work email and both confirmations are required.";
+        return;
+      }
+
+      form.reset();
+      status.classList.remove("is-error");
+      status.textContent = "Application received. We reply within one business day with an account number and a quote valid for 30 days.";
+    });
+  }
+
   /* ---------- Wire it up ---------- */
   document.addEventListener("click", function (event) {
     var button = event.target.closest("[data-add-to-cart]");
@@ -1242,4 +1525,7 @@
   setupCheckout();
   setupNewsletter();
   setupContact();
+  setupWholesale();
+  setupEmailOffer();
+  setupSupportChat();
 })();

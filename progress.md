@@ -55,11 +55,29 @@ Source of truth: `../../brand/brand-guide.md` (v1.1).
       links sit in a bordered tab band between the search and the account/cart cluster.
       Below 1024 it stays a scrolling strip on its own row. (It had been `display: none`
       on every desktop width, so no tabs were visible at all.)
-- [x] Stylesheet and script URLs are versioned (`styles.css?v=20261102`). The old copy
+- [x] Stylesheet and script URLs are versioned (`styles.css?v=4`). The old copy
       was being served from the browser cache, so page markup and CSS fell out of sync:
       the trust strip rendered as bare bullet lists, the specification panel stayed dark
       and the tabs stayed hidden. Bump the value whenever `styles.css` or `script.js`
       changes significantly.
+- [x] Fixed the real cause of the frozen trust strip: a blanket
+      `prefers-reduced-motion` rule at the end of `styles.css` set
+      `animation-duration: 0.01ms !important` on `*`, which beat every other rule. The
+      track is now exempted and reports `52s infinite running`.
+- [x] Email offer: a modal after 12s or 1,400px of scroll, asking for an address in
+      exchange for `WELCOME10` (10% off). Dismissal is remembered in `localStorage`, and
+      `WELCOME10` is wired into the cart alongside `LAB5`.
+- [x] Support chat: a "Chat with Kit" launcher bottom-right on every page, with a
+      rule-based assistant covering certificates, shipping, returns, wholesale, discounts,
+      payment, storage and solubility — and refusing dosing or reconstitution questions,
+      which is the compliance boundary.
+- [x] `wholesale.html` gained a proper application form: institution, type, expected
+      volume, contact, work email, phone, shipping city, PO/tax reference, plus RUO and
+      21+ confirmations. Client-side validation, no backend yet.
+- [x] Age gate now remembers acceptance for the session only, so it greets each new visit
+      instead of disappearing forever.
+- [x] Removed the duplicate research-use line on the product page; the badge alone carries
+      it there, and the full statement still appears in the compliance panel below.
 - [x] Brand audit must-fixes (2026-11-02), asset version bumped to `v=4`:
       - Top bar: the research-use line no longer truncates (it was cut off with "…"
         at 1440). Top bar set in Inter 12px; the third message shows from 1280px up

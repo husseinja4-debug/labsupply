@@ -113,11 +113,96 @@
 
       <h2>What we cannot do</h2>
       <p>We do not sell to the general public. Wholesale accounts must ship to a verified institutional or commercial address. We cannot provide dosing, reconstitution or administration guidance for any product we supply.</p>
+    </section>
 
-      <p style="margin-top: 48px; display: flex; flex-wrap: wrap; gap: 12px;">
-        <a class="btn btn--solid" href="contact.html">Request a quote</a>
-        <a class="btn btn--outline" href="shop.html">Browse the catalogue</a>
-      </p>
+    <section class="wrap apply" aria-labelledby="apply-title">
+      <div class="apply__grid">
+        <div class="form-card">
+          <h2 id="apply-title">Apply for a wholesale account</h2>
+          <p class="lede">Takes about two minutes. We reply within one business day with an account number and a quote valid for 30 days.</p>
+
+          <p class="form-status" data-wholesale-status hidden role="status"></p>
+
+          <form data-wholesale-form novalidate>
+            <div class="field-grid">
+              <div class="field field--wide">
+                <label for="whl-org">Institution or company</label>
+                <input id="whl-org" name="organisation" type="text" autocomplete="organization" required>
+              </div>
+
+              <div class="field">
+                <label for="whl-type">Institution type</label>
+                <select id="whl-type" name="type">
+                  <option>University or college</option>
+                  <option>Teaching hospital or clinic</option>
+                  <option>Contract research organisation</option>
+                  <option>Secondary school</option>
+                  <option>Company or startup</option>
+                  <option>Other research body</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="whl-volume">Expected monthly volume</label>
+                <select id="whl-volume" name="volume">
+                  <option>10 – 50 units</option>
+                  <option>50 – 200 units</option>
+                  <option>200 – 1,000 units</option>
+                  <option>1,000+ units</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="whl-name">Contact name</label>
+                <input id="whl-name" name="contact" type="text" autocomplete="name" required>
+              </div>
+
+              <div class="field">
+                <label for="whl-email">Work email</label>
+                <input id="whl-email" name="email" type="email" autocomplete="email" required>
+              </div>
+
+              <div class="field">
+                <label for="whl-phone">Phone</label>
+                <input id="whl-phone" name="phone" type="tel" autocomplete="tel">
+              </div>
+
+              <div class="field">
+                <label for="whl-city">Shipping city and state</label>
+                <input id="whl-city" name="city" type="text" autocomplete="address-level2" required>
+              </div>
+
+              <div class="field field--wide">
+                <label for="whl-notes">Purchase order or tax-exempt reference</label>
+                <textarea id="whl-notes" name="notes" rows="3" placeholder="Optional. Add a PO number, tax-exempt ID, or the compounds you need."></textarea>
+              </div>
+            </div>
+
+            <label class="check" for="whl-ruo">
+              <input id="whl-ruo" name="ruo" type="checkbox" required>
+              <span>I confirm every product will be used for laboratory research or teaching only, not for human or veterinary use.</span>
+            </label>
+
+            <label class="check" for="whl-age">
+              <input id="whl-age" name="age" type="checkbox" required>
+              <span>I confirm the buyer is 21 or older and authorised to purchase for this institution.</span>
+            </label>
+
+            <button class="btn btn--solid" type="submit">Submit application</button>
+          </form>
+        </div>
+
+        <aside class="apply__aside">
+          <h3>What you get</h3>
+          <ul>
+            <li>Volume pricing at 5 units (5%) and 9 units (10%), applied automatically.</li>
+            <li>Purchase orders invoiced net 30 after dispatch.</li>
+            <li>A certificate of analysis on every lot, matched to the lot number.</li>
+            <li>A named contact, not a ticket queue.</li>
+          </ul>
+          <p class="form-note" style="margin-top: 16px;">Questions before applying? Email <a href="mailto:hello@ordyn.example">hello@ordyn.example</a>.</p>
+        </aside>
+      </div>
     </section>
   </main>
 
