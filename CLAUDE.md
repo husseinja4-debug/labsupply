@@ -1,24 +1,32 @@
 @AGENTS.md
 @../../Aboutme.md
 
-<!-- Full rules, Website Building Best Practices, Design Method and Screenshot Loop live in AGENTS.md (loaded above). Edit them there. -->
-
 # Claude: how to work on this project
 
-## Execute, don't stall
-- When given a plan or an instruction, **execute it. Start building right away.**
-- Don't ask for permission to proceed. Make the sensible choice, say what you chose, keep going.
-- Only stop to ask before deleting or replacing files, or when an instruction contradicts `plan.md`.
+## Where the rules live
 
-## Every visual task
-1. Check `plan.md` and the **Design Method** in AGENTS.md: reference first, layout in grayscale, then type, then color, then polish.
-2. Use only the spacing scale (4/8/12/16/24/32/48/64/96/128), the type scale, and the colors in `plan.md`.
-3. Build it.
-4. Run the **Screenshot Loop**: screenshot at 375px and 1440px → list specific differences → fix → repeat (stop after 5 rounds and ask).
-5. Check the console for errors, and check hover and focus states.
-6. Show me the final screenshots, explain what you did in simple words, and update `progress.md`.
+Every project rule is its own file in `.claude/rules/` and is loaded automatically:
+
+- Rules **without** `paths:` frontmatter load every session — workflow, tech stack,
+  explaining, screenshot loop, definition of done.
+- Rules **with** `paths:` frontmatter load only when you read or edit a file matching
+  those globs — HTML structure, responsive, performance, accessibility, SEO,
+  e-commerce UX, code quality, design method.
+
+`AGENTS.md` is the index and describes what each file covers. Do not restate a rule here
+or in `AGENTS.md`; edit the rule file and bump nothing else.
+
+## Adding or changing a rule
+
+1. Create or edit one topic per file in `.claude/rules/`, numbered `NN-topic.md`.
+2. Give it `paths:` frontmatter only if it applies to specific file types. Leave it out
+   for anything that governs how you behave.
+3. Add the file to the table in `AGENTS.md`.
+
+Run `/memory` if you are unsure which rules are actually loaded.
 
 ## Never
+
 - Call a visual task done without taking screenshots.
 - Use frameworks or libraries.
 - Delete or replace files without asking.
