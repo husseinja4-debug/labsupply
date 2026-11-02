@@ -16,7 +16,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=3">
 
   <script type="application/ld+json">
   {
@@ -64,6 +64,15 @@
         </button>
       </form>
 
+      <nav class="nav" aria-label="Main">
+        <div class="wrap nav__inner">
+          <a href="shop.html">Products</a>
+          <a href="shop.html#categories">Categories</a>
+          <a href="faq.html#quality">COA library</a>
+          <a href="wholesale.html">Wholesale</a>
+          <a href="faq.html">Support</a>
+        </div>
+      </nav>
       <div class="header__actions">
         <a class="icon-btn" href="contact.html" aria-label="Account and support">
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -79,16 +88,6 @@
         </button>
       </div>
     </div>
-
-    <nav class="nav" aria-label="Main">
-      <div class="wrap nav__inner">
-        <a href="shop.html" aria-current="page">Shop compounds</a>
-        <a href="shop.html#categories">Categories</a>
-        <a href="faq.html#quality">COA library</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-      </div>
-    </nav>
   </header>
 
   <main id="main">
@@ -97,8 +96,8 @@
       <div class="wrap hero__inner">
         <div class="hero__copy">
           <p class="hero__badge"><span aria-hidden="true"></span>Research use only · Supplied from the US</p>
-          <h1>A catalogue you can check.</h1>
-          <p class="hero__lede">Every product lists purity, form and storage before you add it to a cart. Every lot ships with a certificate of analysis, and orders leave the warehouse within 24 hours.</p>
+          <h1>Specified per lot. Documented per order.</h1>
+          <p class="hero__lede">Purity, identity, form and storage are published for every item in the catalogue. Each lot ships with its certificate of analysis, and orders leave the warehouse within 24 hours.</p>
           <div class="hero__actions">
             <a class="btn btn--solid" href="shop.html">Shop the catalogue</a>
             <a class="btn btn--onDark" href="faq.html#quality">Verify a certificate</a>
@@ -113,12 +112,28 @@
 
     <!-- What is on every order -->
     <div class="trust">
-      <ul class="wrap trust__inner">
-        <li class="trust__item">HPLC-MS verified</li>
-        <li class="trust__item">COA on every lot</li>
-        <li class="trust__item">Dispatch in 24 hours</li>
-        <li class="trust__item">Free shipping over $199</li>
-      </ul>
+      <div class="trust__viewport">
+        <div class="trust__track">
+          <ul class="trust__group">
+            <li class="trust__item">HPLC-MS verified</li>
+            <li class="trust__item">COA on every lot</li>
+            <li class="trust__item">Dispatch in 24 hours</li>
+            <li class="trust__item">Free shipping over $199</li>
+          </ul>
+          <ul class="trust__group" aria-hidden="true">
+            <li class="trust__item">HPLC-MS verified</li>
+            <li class="trust__item">COA on every lot</li>
+            <li class="trust__item">Dispatch in 24 hours</li>
+            <li class="trust__item">Free shipping over $199</li>
+          </ul>
+          <ul class="trust__group" aria-hidden="true">
+            <li class="trust__item">HPLC-MS verified</li>
+            <li class="trust__item">COA on every lot</li>
+            <li class="trust__item">Dispatch in 24 hours</li>
+            <li class="trust__item">Free shipping over $199</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <!-- COA support -->
@@ -322,7 +337,7 @@
     </section>
 
     <!-- CTA band -->
-    <section class="band dark-section">
+    <section class="band band--center dark-section">
       <div class="wrap band__inner">
         <p class="kicker">Ordering</p>
         <h2>Order by specification, not by description.</h2>
@@ -341,7 +356,7 @@
             <p>Orders leave within 24 hours, tracked door to door.</p>
           </li>
         </ul>
-        <p style="margin-top:32px"><a class="btn btn--solid" href="shop.html">Shop the catalogue</a></p>
+        <p class="band__cta"><a class="btn btn--solid" href="shop.html">Shop the catalogue</a></p>
       </div>
     </section>
 
@@ -505,6 +520,7 @@
               <li><a href="faq.html">Support centre</a></li>
               <li><a href="faq.html#quality">COA library</a></li>
               <li><a href="contact.html">Contact</a></li>
+              <li><a href="wholesale.html">Wholesale</a></li>
               <li><a href="about.html">About</a></li>
               <li><a href="faq.html#shipping">Shipping &amp; returns</a></li>
             </ul>
@@ -535,7 +551,7 @@
   </footer>
 
   <div class="toast" role="status" aria-live="polite" data-toast></div>
-  <script src="products.js" defer></script>
-  <script src="script.js" defer></script>
+  <script src="products.js?v=3" defer></script>
+  <script src="script.js?v=3" defer></script>
 </body>
 </html>

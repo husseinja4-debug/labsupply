@@ -32,12 +32,42 @@ Source of truth: `../../brand/brand-guide.md` (v1.1).
 - [x] Fixed: closed `<dialog>` elements rendering on load; horizontal overflow from
       nowrap top-bar text and grid children that could not shrink
 - [x] Verified in Chrome at 1440 and 390: home, shop, product, cart, about, support
+- [x] Home hero rewritten to "Specified per lot. Documented per order." with a factual
+      lede that leads on purity, identity, form and storage
+- [x] Closing CTA band centred (`.band--center`): eyebrow, heading, lede, three columns
+      and the button all sit on the page axis
+- [x] Trust strip rebuilt as a slow marquee — 52s linear loop, three duplicated groups so
+      the wrap is seamless, masked edges, white surface with blue ticks so it reads as a
+      band rather than a pale divider; duplicates are `aria-hidden` and the whole strip
+      falls back to a centred static row under `prefers-reduced-motion`
+- [x] Navigation cut to five: Products · Categories · COA library · Wholesale · Support.
+      About and Contact moved out of the nav; both remain in the footer
+- [x] New `wholesale.html`: institutional ordering, volume terms (5% / 10% / Net 30),
+      account opening, stated limits, quote CTA. Added to `sitemap.xml`, the nav and the
+      footer Resources column on every page
+- [x] Product page: the specification table is no longer a dark block in the right-hand
+      column. It is now a light bordered panel sitting directly under the product photo,
+      which uses the empty space in the left column. On phones it stacks after the buy
+      box, before Related compounds
+- [x] Trust strip direction reversed — it now travels to the right — and the type raised
+      from 13px to 16px with wider gaps and larger ticks
+- [x] Navigation moved out of its own row and into the header: from 1024px up the five
+      links sit in a bordered tab band between the search and the account/cart cluster.
+      Below 1024 it stays a scrolling strip on its own row. (It had been `display: none`
+      on every desktop width, so no tabs were visible at all.)
+- [x] Stylesheet and script URLs are versioned (`styles.css?v=20261102`). The old copy
+      was being served from the browser cache, so page markup and CSS fell out of sync:
+      the trust strip rendered as bare bullet lists, the specification panel stayed dark
+      and the tabs stayed hidden. Bump the value whenever `styles.css` or `script.js`
+      changes significantly.
 
 ### Next
 - [ ] Story, mission and values are still not supplied; the About copy is the old one
       and needs rewriting in the Ordyn voice once those are written
 - [ ] Real product photography at the brand's cool grade (current set is placeholder)
 - [ ] Legal review of the footer disclaimer, especially the 503A/503B paragraph
+- [ ] Confirm the wholesale terms on `wholesale.html` (net 30, institutional-only
+      shipping) before the page goes live
 - [ ] Domain, payments, hosting before launch
 - [ ] Optional: dark-mode pass using `[data-theme="dark"]`, already wired in the tokens
 
@@ -179,4 +209,9 @@ Scores move a few points between runs on a local server without compression or c
 - 2026-10-31 — Design direction changed on request: cream + deep plum, editorial serif headings, following the protidehealth.com layout.
 - 2026-10-31 — Two font families plus serif italic accents; imagery is AI-generated placeholder on a consistent set.
 - 2026-11-01 — Age gate, cart drawer, COA verification, category pages, quantity tiers and the compliance rewrite were added; the drawer height bug was fixed.
+- 2026-11-01 — Hero copy rewritten, CTA band centred, trust strip turned into a slow
+  marquee, nav rebuilt around Products / Wholesale / Support (new `wholesale.html`), and
+  the product specification table moved under the product photo as a light panel.
+- 2026-11-01 — `faq.html` was repaired after the previous commit double-encoded it
+  (UTF-8 read as Windows-1252); characters are clean and there is no byte-order mark.
 - The site is plain HTML/CSS/JS and opens directly from disk; it also runs from `http://localhost:8000` via `python -m http.server`
