@@ -66,14 +66,18 @@ Source of truth: `../../brand/brand-guide.md` (v1.1).
       track is now exempted and reports `52s infinite running`.
 - [x] Email offer: a modal after 12s or 1,400px of scroll, asking for an address in
       exchange for `WELCOME10` (10% off). Dismissal is remembered in `localStorage`, and
-      `WELCOME10` is wired into the cart alongside `LAB5`.
+      `WELCOME10` is wired into the cart alongside `LAB5`. The card is branded with the
+      measurement mark and centre-set, with a full-width field and button.
 - [x] Support chat: a "Chat with Kit" launcher bottom-right on every page, with a
       rule-based assistant covering certificates, shipping, returns, wholesale, discounts,
       payment, storage and solubility — and refusing dosing or reconstitution questions,
-      which is the compliance boundary.
+      which is the compliance boundary. Wandered off the mono font, grew to 404px, softer
+      bubbles and a typing indicator so it reads less like a machine.
 - [x] `wholesale.html` gained a proper application form: institution, type, expected
       volume, contact, work email, phone, shipping city, PO/tax reference, plus RUO and
-      21+ confirmations. Client-side validation, no backend yet.
+      21+ confirmations. Client-side validation, no backend yet. The volume-pricing cards
+      and the surrounding prose were removed — the page is now the form plus a short
+      "what you get" panel.
 - [x] Age gate now remembers acceptance for the session only, so it greets each new visit
       instead of disappearing forever.
 - [x] Removed the duplicate research-use line on the product page; the badge alone carries

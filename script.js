@@ -1254,16 +1254,21 @@
       dialog.innerHTML =
         '<div class="offer__inner">' +
         '<button class="offer__close" type="button" data-offer-close aria-label="Close">×</button>' +
+        '<span class="offer__mark" aria-hidden="true">' +
+        '<svg viewBox="0 0 100 100" width="36" height="36" fill="none" focusable="false" aria-hidden="true">' +
+        '<circle cx="50" cy="50" r="37" stroke="currentColor" stroke-width="11.5"/>' +
+        '<line x1="13.75" y1="57.4" x2="86.25" y2="57.4" stroke="#2F5BEA" stroke-width="4.5"/>' +
+        "</svg></span>" +
         '<p class="kicker">One-time offer</p>' +
         '<h2 id="offer-title">Take 10% off your first order</h2>' +
-        '<p class="offer__copy">Join the batch notes list and we will send the code. One email when a lot is released, nothing else.</p>' +
+        '<p class="offer__copy">Join the batch notes list and we will send the code — one email when a lot is released, nothing else.</p>' +
         '<form class="offer__form" data-offer-form novalidate>' +
         '<label class="visually-hidden" for="offer-email">Email address</label>' +
         '<input id="offer-email" name="email" type="email" placeholder="you@lab.org" autocomplete="email" required>' +
         '<button class="btn btn--solid" type="submit">Send my code</button>' +
-        '</form>' +
+        "</form>" +
         '<p class="offer__note" data-offer-note role="status"></p>' +
-        '<p class="offer__fine">Research use only. The code applies at checkout and cannot be combined with LAB5.</p>' +
+        '<p class="offer__fine">Research use only. Applies at checkout and cannot be combined with LAB5.</p>' +
         "</div>";
       document.body.appendChild(dialog);
 
@@ -1307,6 +1312,7 @@
       });
 
       dialog.showModal();
+      dialog.querySelector("#offer-email").focus();
     }
 
     window.setTimeout(build, 12000);
@@ -1320,6 +1326,10 @@
   var CHAT_NAME = "Kit";
 
   var CHAT_ANSWERS = [
+    {
+      match: /(where('| i)?s my order|order status|my order|track|coming|when will it|has it shipped|dispatch date)/i,
+      reply: "The tracking link is in your confirmation email. Orders placed before 2pm ET leave the same day and arrive in 2–3 business days. If the link has expired, send the order number to hello@ordyn.example and a person will look it up."
+    },
     {
       match: /(dose|dosing|dosage|mg per|inject|reconstitut|administer|take it|human use|consume)/i,
       reply: "I cannot advise on dosing, reconstitution or administration — that is outside what we are permitted to discuss. All compounds are sold for laboratory research only."
@@ -1427,7 +1437,17 @@
       var clean = text.trim();
       if (!clean) return;
       say(clean, true);
-      window.setTimeout(function () { say(answer(clean), false); }, 320);
+
+      var typing = el("div", "chat__msg chat__msg--bot");
+      typing.setAttribute("aria-label", CHAT_NAME + " is typing");
+      typing.innerHTML = '<span class="chat__typing" aria-hidden="true"><span></span><span></span><span></span></span>';
+      log.appendChild(typing);
+      log.scrollTop = log.scrollHeight;
+
+      window.setTimeout(function () {
+        typing.remove();
+        say(answer(clean), false);
+      }, 700);
     }
 
     ["Certificates", "Shipping", "Returns", "Wholesale", "Discounts"].forEach(function (label) {
