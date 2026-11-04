@@ -891,66 +891,300 @@
     draw();
   }
 
-  /* ---------- Age gate ---------- */
-  function setupAgeGate() {
-    var KEY = "labsupply.age.v1";
-    var accepted = false;
+class AgeGateController {
+  constructor() {
+    this.onAccept = () => {};
+    this._element = null;
+  }
+
+  // Builds the verification panel; returns the element to mount.
+  build() {
+    const TRUSTPILOT = 'https://www.trustpilot.com/review/ordyn';
+    const box = document.createElement('div');
+    box.className = 'age-gate__inner';
+    box.innerHTML =
+      '<p class="age-gate__brand" aria-hidden="true"><span class="brand__mark">' +
+      '<svg viewBox="0 0 100 100" width="20" height="20" fill="none" focusable="false" aria-hidden="true">' +
+      '<circle cx="50" cy="50" r="37" stroke="currentColor" stroke-width="11.5"/>' +
+      '<line x1="13.75" y1="57.4" x2="86.25" y2="57.4" stroke="#2F5BEA" stroke-width="4.5"/></svg>' +
+      '</span><span>rdyn</span></p>' +
+      '<p class="kicker">Researcher verification</p>' +
+      '<h2 id="age-gate-title">Confirm before you continue</h2>' +
+      '<p>Ordyn sells laboratory products exclusively to qualified researchers and laboratories for in vitro and laboratory use. Please confirm before continuing.</p>' +
+      '<div class="age-gate__confirm">' +
+      '<label class="age-gate__check">' +
+      '<input type="checkbox" data-age-21>' +
+      '<span><strong>I am at least 21 years of age.</strong></span></label>' +
+      '<label class="age-gate__check">' +
+      '<input type="checkbox" data-age-research>' +
+      '<span><strong>I confirm I am a qualified researcher</strong> purchasing for in vitro / laboratory research use only — not for human or veterinary use.</span></label>' +
+      '</div>' +
+      '<p class="age-gate__error" data-age-error role="alert" hidden>Tick both boxes to confirm before continuing.</p>' +
+      '<div class="age-gate__actions">' +
+      '<button class="btn btn--solid btn--block" type="button" data-age-yes disabled>Enter Ordyn <span aria-hidden="true">→</span></button>' +
+      '</div>' +
+      '<p class="age-gate__fine">By proceeding you affirm the statements above are true. All compounds and research materials provided by Ordyn are strictly for laboratory and research use only. They are not for human or veterinary use, not for use in diagnostic procedures, and have not been evaluated by the U.S. Food and Drug Administration. <a href="faq.html#research-use">Full Terms and Conditions</a>.</p>' +
+      '<p class="age-gate__exit">Not a researcher? <a href="https://www.google.com" data-age-exit>Exit</a></p>' +
+      '<p class="age-gate__trust">Excellent ★★★★★ Trustpilot — <a href="' + TRUSTPILOT + '" target="_blank" rel="noopener">Read our reviews</a></p>' +
+      '<p class="age-gate__denied" data-age-denied hidden>You must be 21 or older and a qualified researcher to enter. These products are supplied for laboratory research only.</p>';
+    this._element = box;
+    return box;
+  }
+
+  clickExit() {
+    const box = this._element;
+    if (!box) return;
+    box.querySelector('[data-age-denied]').hidden = false;
+    box.querySelector('.age-gate__actions').hidden = true;
+    box.querySelector('.age-gate__confirm').hidden = true;
+    box.querySelector('.age-gate__error').hidden = true;
+    box.querySelector('.age-gate__fine').hidden = true;
+    box.querySelector('.age-gate__exit').hidden = true;
+    box.querySelector('.age-gate__trust').hidden = true;
+    const heading = box.querySelector('h2');
+    heading.textContent = 'You cannot continue';
+    heading.nextElementSibling.textContent =
+      'Ordyn supplies laboratory products to qualified researchers only. If you are working in a laboratory or teaching institution, you can return once that applies to you.';
+  }
+
+  _attach(box, accept) {
+    const denied = box.querySelector('[data-age-denied]');
+    const error = box.querySelector('[data-age-error]');
+    const actions = box.querySelector('.age-gate__actions');
+    const yes = box.querySelector('[data-age-yes]');
+    const box21 = box.querySelector('[data-age-21]');
+    const boxResearch = box.querySelector('[data-age-research]');
+
+    const sync = () => {
+      yes.disabled = !(box21.checked && boxResearch.checked);
+      error.hidden = box21.checked && boxResearch.checked;
+    };
+    [box21, boxResearch].forEach((boxel) => {
+      boxel.addEventListener('change', () => {
+        box.classList.toggle('age-gate--has-error', !sync());
+      });
+    });
+
+    yes.addEventListener('click', () => {
+      if (!box21.checked || !boxResearch.checked) {
+        error.hidden = false;
+        (box21.checked ? boxResearch : box21).focus();
+        return;
+      }
+      accept();
+    });
+
+    box.querySelector('[data-age-exit]').addEventListener('click', (event) => {
+      event.preventDefault();
+      this.clickExit();
+    });
+
+    sync();
+  }
+
+  attach(box) {
+    this._attach(box, () => this.onAccept());
+  }
+
+  show() {
+    const KEY = 'labsupply.age.v1';
+    let accepted = false;
     try {
-      // Session only, so the gate greets each new visit rather than being remembered
-      // for months on a shared machine.
-      accepted = sessionStorage.getItem(KEY) === "yes";
+      accepted = sessionStorage.getItem(KEY) === 'yes';
     } catch (error) {
       accepted = false;
     }
     if (accepted) return;
 
-    var dialog = document.createElement("dialog");
-    dialog.className = "age-gate";
-    dialog.setAttribute("aria-labelledby", "age-gate-title");
-    dialog.innerHTML =
-      '<div class="age-gate__inner">' +
-      '<p class="kicker">Researcher verification</p>' +
-      '<h2 id="age-gate-title">Confirm your age</h2>' +
-      "<p>Ordyn supplies laboratory products for research, teaching and study. They are not for human or veterinary consumption, and nothing here is intended to diagnose, treat or prevent any condition.</p>" +
-      '<p class="age-gate__q">Are you 21 or older?</p>' +
-      '<div class="age-gate__actions">' +
-      '<button class="btn btn--solid btn--block" type="button" data-age-yes>Enter the site</button>' +
-      '<button class="btn btn--outline btn--block" type="button" data-age-no>I am under 21</button>' +
-      "</div>" +
-      '<p class="age-gate__denied" data-age-denied hidden>You must be 21 or older to enter. These products are supplied for laboratory research only.</p>' +
-      "</div>";
+    const dialog = document.createElement('dialog');
+    dialog.className = 'age-gate';
+    dialog.setAttribute('aria-labelledby', 'age-gate-title');
+    dialog.appendChild(this.build());
     document.body.appendChild(dialog);
 
-    var denied = dialog.querySelector("[data-age-denied]");
-    var actions = dialog.querySelector(".age-gate__actions");
-
     // The gate cannot be dismissed by pressing Escape or clicking the backdrop
-    dialog.addEventListener("cancel", function (event) {
+    dialog.addEventListener('cancel', (event) => {
       event.preventDefault();
     });
-    dialog.addEventListener("click", function (event) {
+    dialog.addEventListener('click', (event) => {
       if (event.target === dialog) event.stopPropagation();
     });
 
-    dialog.querySelector("[data-age-yes]").addEventListener("click", function () {
+    this._attach(dialog.firstChild, () => {
       try {
-        localStorage.setItem(KEY, "yes");
-        sessionStorage.setItem(KEY, "yes");
-      } catch (error) {
+        localStorage.setItem(KEY, 'yes');
+        sessionStorage.setItem(KEY, 'yes');
+      } catch (err) {
         /* ignore */
       }
       dialog.close();
     });
 
-    dialog.querySelector("[data-age-no]").addEventListener("click", function () {
-      denied.hidden = false;
-      actions.hidden = true;
-      dialog.querySelector(".age-gate__q").hidden = true;
-    });
-
     dialog.showModal();
-    dialog.querySelector("[data-age-yes]").focus();
+    dialog.querySelector('[data-age-21]').focus();
   }
+}
+
+class OfferController {
+  constructor() {
+    this._element = null;
+  }
+
+  _build() {
+    const TRUSTPILOT = 'https://www.trustpilot.com/review/ordyn';
+    const box = document.createElement('div');
+    box.className = 'offer__inner';
+    box.innerHTML =
+      '<button class="offer__close" type="button" data-offer-close aria-label="Close offer">' +
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>' +
+      '</button>' +
+      '<p class="offer__brand" aria-hidden="true"><span class="brand__mark">' +
+      '<svg viewBox="0 0 100 100" width="20" height="20" fill="none" focusable="false" aria-hidden="true">' +
+      '<circle cx="50" cy="50" r="37" stroke="currentColor" stroke-width="11.5"/>' +
+      '<line x1="13.75" y1="57.4" x2="86.25" y2="57.4" stroke="#2F5BEA" stroke-width="4.5"/></svg>' +
+      '</span><span>rdyn</span></p>' +
+      '<p class="offer__eyebrow">Instant 10% discount</p>' +
+      '<h2 id="offer-title">Save 10%. Stack it on every sale.</h2>' +
+      '<p class="offer__copy">The code lands instantly and works with every sitewide promo we run.</p>' +
+      '<ul class="offer__list">' +
+      '<li>10% off your first order</li>' +
+      '<li>Stacks with every sale code we run</li>' +
+      '<li>Early access to restocks and new lots</li>' +
+      '</ul>' +
+      '<form class="offer__form" data-offer-form novalidate>' +
+      '<label class="visually-hidden" for="offer-email">Email address</label>' +
+      '<input id="offer-email" name="email" type="email" placeholder="name@lab.org" autocomplete="email" required>' +
+      '<button class="btn btn--solid" type="submit">Send my 10% code</button>' +
+      '</form>' +
+      '<p class="offer__note" data-offer-note role="status"></p>' +
+      '<p class="offer__thanks">Trusted by thousands of researchers</p>' +
+      '<p class="offer__stars"><a href="' + TRUSTPILOT + '" target="_blank" rel="noopener">Excellent' +
+      '<span aria-hidden="true"> ★★★★★ Trustpilot</span></a></p>' +
+      '<p class="offer__fine">First order only. No spam. For research and educational use only.</p>';
+    this._element = box;
+    return box;
+  }
+
+  onEmailSubmit(email) {
+    // Returns true when the address is valid.
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(email || '').trim());
+  }
+
+  attach(box) {
+    // Wires the inline panel: validate, save the code, show it.
+    const note = box.querySelector('[data-offer-note]');
+    const input = box.querySelector('#offer-email');
+    const form = box.querySelector('[data-offer-form]');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!this.onEmailSubmit(input.value)) {
+        note.classList.add('is-error');
+        note.textContent = 'That email does not look right. Try name@lab.org.';
+        input.focus();
+        return;
+      }
+      note.classList.remove('is-error');
+      note.textContent = 'You are on the list. Use this code at checkout:';
+      const code = document.createElement('span');
+      code.className = 'offer__code';
+      code.textContent = 'WELCOME10';
+      note.appendChild(document.createElement('br'));
+      note.appendChild(code);
+      form.hidden = true;
+    });
+  }
+
+  show() {
+    const KEY = 'ordyn.offer.v3';
+    try {
+      if (localStorage.getItem(KEY)) return;
+    } catch (error) {
+      return;
+    }
+
+    let shown = false;
+    const build = () => {
+      if (shown) return;
+      shown = true;
+
+      const remember = () => {
+        try {
+          localStorage.setItem(KEY, 'seen');
+        } catch (error) {
+          /* ignore */
+        }
+      };
+
+      const dialog = document.createElement('dialog');
+      dialog.className = 'offer';
+      dialog.setAttribute('aria-labelledby', 'offer-title');
+      dialog.appendChild(this._build());
+      document.body.appendChild(dialog);
+      this.attach(dialog.firstChild);
+
+      dialog.querySelector('[data-offer-close]').addEventListener('click', () => {
+        remember();
+        dialog.close();
+        dialog.remove();
+      });
+      dialog.addEventListener('close', remember);
+
+      dialog.showModal();
+      dialog.querySelector('#offer-email').focus();
+    };
+
+    const queue = () => {
+      // Wait for the verification gate to clear first, so the two never stack.
+      if (document.querySelector('dialog.age-gate[open]')) {
+        const watcher = window.setInterval(() => {
+          if (!document.querySelector('dialog.age-gate[open]')) {
+            window.clearInterval(watcher);
+            build();
+          }
+        }, 400);
+        return;
+      }
+      build();
+    };
+
+    window.setTimeout(queue, 12000);
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (window.scrollY > 1400) queue();
+      },
+      { passive: true },
+    );
+  }
+}
+
+class TrustpilotStripController {
+  constructor() {
+    this._element = null;
+  }
+
+  build() {
+    const TRUSTPILOT = 'https://www.trustpilot.com/review/ordyn';
+    const box = document.createElement('div');
+    box.className = 'strip';
+    box.innerHTML =
+      '<p class="strip__stars"><a href="' + TRUSTPILOT + '" target="_blank" rel="noopener">' +
+      '<span class="strip__excellent">Excellent</span>' +
+      '<span class="strip__box" aria-hidden="true">★★★★★</span>' +
+      '<span class="strip__word">Trustpilot</span></a></p>';
+    this._element = box;
+    return box;
+  }
+
+  show() {
+    // One strip under the nav, on every page — the same live component as
+    // the one inside the email offer, so the two never disagree.
+    document.querySelectorAll('.header__row').forEach((row) => {
+      if (row.querySelector('.strip')) return;
+      row.appendChild(this.build());
+    });
+  }
+}
 
   /* ---------- Category landing page ---------- */
   var CATEGORY_COPY = {
@@ -1227,99 +1461,301 @@
     });
   }
 
-  /* ---------- Email offer — 10% for a sign-up ---------- */
-  function setupEmailOffer() {
-    var KEY = "ordyn.offer.v2";
-    var OFFER_CODE = "WELCOME10";
-
-    try {
-      if (localStorage.getItem(KEY)) return;
-    } catch (error) {
-      return; // storage blocked — do not nag on every page
+class AgeGateController {
+    constructor() {
+      this.onAccept = () => {};
+      this._element = null;
     }
 
-    var shown = false;
-
-    function remember() {
-      try { localStorage.setItem(KEY, "seen"); } catch (error) { /* ignore */ }
-    }
-
-    function build() {
-      if (shown) return;
-      shown = true;
-
-      var dialog = document.createElement("dialog");
-      dialog.className = "offer";
-      dialog.setAttribute("aria-labelledby", "offer-title");
-      dialog.innerHTML =
-        '<div class="offer__inner">' +
-        '<button class="offer__close" type="button" data-offer-close aria-label="Close">×</button>' +
-        '<span class="offer__mark" aria-hidden="true">' +
-        '<svg viewBox="0 0 100 100" width="36" height="36" fill="none" focusable="false" aria-hidden="true">' +
+    // Builds the verification panel; returns the element to mount.
+    build() {
+      const TRUSTPILOT = 'https://www.trustpilot.com/review/ordyn';
+      const box = document.createElement('div');
+      box.className = 'age-gate__inner';
+      box.innerHTML =
+        '<p class="age-gate__brand" aria-hidden="true"><span class="brand__mark">' +
+        '<svg viewBox="0 0 100 100" width="20" height="20" fill="none" focusable="false" aria-hidden="true">' +
         '<circle cx="50" cy="50" r="37" stroke="currentColor" stroke-width="11.5"/>' +
-        '<line x1="13.75" y1="57.4" x2="86.25" y2="57.4" stroke="#2F5BEA" stroke-width="4.5"/>' +
-        "</svg></span>" +
-        '<p class="kicker">One-time offer</p>' +
-        '<h2 id="offer-title">Take 10% off your first order</h2>' +
-        '<p class="offer__copy">Join the batch notes list and we will send the code — one email when a lot is released, nothing else.</p>' +
-        '<form class="offer__form" data-offer-form novalidate>' +
-        '<label class="visually-hidden" for="offer-email">Email address</label>' +
-        '<input id="offer-email" name="email" type="email" placeholder="you@lab.org" autocomplete="email" required>' +
-        '<button class="btn btn--solid" type="submit">Send my code</button>' +
-        "</form>" +
-        '<p class="offer__note" data-offer-note role="status"></p>' +
-        '<p class="offer__fine">Research use only. Applies at checkout and cannot be combined with LAB5.</p>' +
-        "</div>";
-      document.body.appendChild(dialog);
+        '<line x1="13.75" y1="57.4" x2="86.25" y2="57.4" stroke="#2F5BEA" stroke-width="4.5"/></svg>' +
+        '</span><span>rdyn</span></p>' +
+        '<p class="kicker">Researcher verification</p>' +
+        '<h2 id="age-gate-title">Confirm before you continue</h2>' +
+        '<p>Ordyn sells laboratory products exclusively to qualified researchers and laboratories for in vitro and laboratory use. Please confirm before continuing.</p>' +
+        '<div class="age-gate__confirm">' +
+        '<label class="age-gate__check">' +
+        '<input type="checkbox" data-age-21>' +
+        '<span><strong>I am at least 21 years of age.</strong></span></label>' +
+        '<label class="age-gate__check">' +
+        '<input type="checkbox" data-age-research>' +
+        '<span><strong>I confirm I am a qualified researcher</strong> purchasing for in vitro / laboratory research use only — not for human or veterinary use.</span></label>' +
+        '</div>' +
+        '<p class="age-gate__error" data-age-error role="alert" hidden>Tick both boxes to confirm before continuing.</p>' +
+        '<div class="age-gate__actions">' +
+        '<button class="btn btn--solid btn--block" type="button" data-age-yes disabled>Enter Ordyn <span aria-hidden="true">→</span></button>' +
+        '</div>' +
+        '<p class="age-gate__fine">By proceeding you affirm the statements above are true. All compounds and research materials provided by Ordyn are strictly for laboratory and research use only. They are not for human or veterinary use, not for use in diagnostic procedures, and have not been evaluated by the U.S. Food and Drug Administration. <a href="faq.html#research-use">Full Terms and Conditions</a>.</p>' +
+        '<p class="age-gate__exit">Not a researcher? <a href="https://www.google.com" data-age-exit>Exit</a></p>' +
+        '<p class="age-gate__trust">Excellent ★★★★★ Trustpilot — <a href="' + TRUSTPILOT + '" target="_blank" rel="noopener">Read our reviews</a></p>' +
+        '<p class="age-gate__denied" data-age-denied hidden>You must be 21 or older and a qualified researcher to enter. These products are supplied for laboratory research only.</p>';
+      this._element = box;
+      return box;
+    }
 
-      var note = dialog.querySelector("[data-offer-note]");
-      var input = dialog.querySelector("#offer-email");
+    // Non-researcher path: hard stop, with the reason on screen.
+    clickExit() {
+      const box = this._element;
+      if (!box) return;
+      box.querySelector('[data-age-denied]').hidden = false;
+      box.querySelector('.age-gate__actions').hidden = true;
+      box.querySelector('.age-gate__confirm').hidden = true;
+      box.querySelector('.age-gate__error').hidden = true;
+      box.querySelector('.age-gate__fine').hidden = true;
+      box.querySelector('.age-gate__exit').hidden = true;
+      box.querySelector('.age-gate__trust').hidden = true;
+      const heading = box.querySelector('h2');
+      heading.textContent = 'You cannot continue';
+      heading.nextElementSibling.textContent =
+        'Ordyn supplies laboratory products to qualified researchers only. If you are working in a laboratory or teaching institution, you can return once that applies to you.';
+    }
 
-      function close() {
-        dialog.close();
-        dialog.remove();
-      }
+    _attach(box, accept) {
+      const error = box.querySelector('[data-age-error]');
+      const yes = box.querySelector('[data-age-yes]');
+      const box21 = box.querySelector('[data-age-21]');
+      const boxResearch = box.querySelector('[data-age-research]');
 
-      dialog.querySelector("[data-offer-close]").addEventListener("click", function () {
-        remember();
-        close();
+      const sync = () => {
+        yes.disabled = !(box21.checked && boxResearch.checked);
+        error.hidden = box21.checked && boxResearch.checked;
+      };
+      [box21, boxResearch].forEach((item) => {
+        item.addEventListener('change', () => {
+          box.classList.toggle('age-gate--has-error', !sync());
+        });
       });
 
-      dialog.addEventListener("close", remember);
-
-      dialog.querySelector("[data-offer-form]").addEventListener("submit", function (event) {
-        event.preventDefault();
-        var value = input.value.trim();
-        var looksRight = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
-
-        note.classList.toggle("is-error", !looksRight);
-
-        if (!looksRight) {
-          note.textContent = "That email does not look right. Try name@lab.org.";
-          input.focus();
+      yes.addEventListener('click', () => {
+        if (!box21.checked || !boxResearch.checked) {
+          error.hidden = false;
+          (box21.checked ? boxResearch : box21).focus();
           return;
         }
+        accept();
+      });
 
-        remember();
-        note.textContent = "You are on the list. Use this code at checkout:";
-        var code = document.createElement("span");
-        code.className = "offer__code";
-        code.textContent = OFFER_CODE;
-        note.appendChild(document.createElement("br"));
-        note.appendChild(code);
-        dialog.querySelector(".offer__form").hidden = true;
-        input = null;
+      box.querySelector('[data-age-exit]').addEventListener('click', (event) => {
+        event.preventDefault();
+        this.clickExit();
+      });
+
+      sync();
+    }
+
+    // Inline (no modal) use — for a standalone page or a test.
+    attach(box) {
+      this._attach(box, () => this.onAccept());
+    }
+
+    show() {
+      const KEY = 'labsupply.age.v1';
+      let accepted = false;
+      try {
+        // Session only, so the gate greets each new visit rather than being remembered
+        // for months on a shared machine.
+        accepted = sessionStorage.getItem(KEY) === 'yes';
+      } catch (error) {
+        accepted = false;
+      }
+      if (accepted) return;
+
+      const dialog = document.createElement('dialog');
+      dialog.className = 'age-gate';
+      dialog.setAttribute('aria-labelledby', 'age-gate-title');
+      dialog.appendChild(this.build());
+      document.body.appendChild(dialog);
+
+      // The gate cannot be dismissed by pressing Escape or clicking the backdrop
+      dialog.addEventListener('cancel', (event) => {
+        event.preventDefault();
+      });
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) event.stopPropagation();
+      });
+
+      this._attach(dialog.firstChild, () => {
+        try {
+          localStorage.setItem(KEY, 'yes');
+          sessionStorage.setItem(KEY, 'yes');
+        } catch (err) {
+          /* ignore */
+        }
+        dialog.close();
       });
 
       dialog.showModal();
-      dialog.querySelector("#offer-email").focus();
+      dialog.querySelector('[data-age-21]').focus();
+    }
+  }
+
+  class OfferController {
+    constructor() {
+      this._element = null;
     }
 
-    window.setTimeout(build, 12000);
+    _build() {
+      const TRUSTPILOT = 'https://www.trustpilot.com/review/ordyn';
+      const box = document.createElement('div');
+      box.className = 'offer__inner';
+      box.innerHTML =
+        '<button class="offer__close" type="button" data-offer-close aria-label="Close offer">' +
+        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>' +
+        '</button>' +
+        '<p class="offer__brand" aria-hidden="true"><span class="brand__mark">' +
+        '<svg viewBox="0 0 100 100" width="20" height="20" fill="none" focusable="false" aria-hidden="true">' +
+        '<circle cx="50" cy="50" r="37" stroke="currentColor" stroke-width="11.5"/>' +
+        '<line x1="13.75" y1="57.4" x2="86.25" y2="57.4" stroke="#2F5BEA" stroke-width="4.5"/></svg>' +
+        '</span><span>rdyn</span></p>' +
+        '<p class="offer__eyebrow">Instant 10% discount</p>' +
+        '<h2 id="offer-title">Save 10%. Stack it on every sale.</h2>' +
+        '<p class="offer__copy">The code lands instantly and works with every sitewide promo we run.</p>' +
+        '<ul class="offer__list">' +
+        '<li>10% off your first order</li>' +
+        '<li>Stacks with every sale code we run</li>' +
+        '<li>Early access to restocks and new lots</li>' +
+        '</ul>' +
+        '<form class="offer__form" data-offer-form novalidate>' +
+        '<label class="visually-hidden" for="offer-email">Email address</label>' +
+        '<input id="offer-email" name="email" type="email" placeholder="name@lab.org" autocomplete="email" required>' +
+        '<button class="btn btn--solid" type="submit">Send my 10% code</button>' +
+        '</form>' +
+        '<p class="offer__note" data-offer-note role="status"></p>' +
+        '<p class="offer__thanks">Trusted by thousands of researchers</p>' +
+        '<p class="offer__stars"><a href="' + TRUSTPILOT + '" target="_blank" rel="noopener">Excellent' +
+        '<span aria-hidden="true"> ★★★★★ Trustpilot</span></a></p>' +
+        '<p class="offer__fine">First order only. No spam. For research and educational use only.</p>';
+      this._element = box;
+      return box;
+    }
 
-    window.addEventListener("scroll", function () {
-      if (window.scrollY > 1400) build();
-    }, { passive: true });
+    // Email check shared by the offer and the batch-notes form.
+    onEmailSubmit(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(email || '').trim());
+    }
+
+    // Inline (no modal) use.
+    attach(box) {
+      const note = box.querySelector('[data-offer-note]');
+      const input = box.querySelector('#offer-email');
+      const form = box.querySelector('[data-offer-form]');
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!this.onEmailSubmit(input.value)) {
+          note.classList.add('is-error');
+          note.textContent = 'That email does not look right. Try name@lab.org.';
+          input.focus();
+          return;
+        }
+        note.classList.remove('is-error');
+        note.textContent = 'You are on the list. Use this code at checkout:';
+        const code = document.createElement('span');
+        code.className = 'offer__code';
+        code.textContent = 'WELCOME10';
+        note.appendChild(document.createElement('br'));
+        note.appendChild(code);
+        form.hidden = true;
+      });
+    }
+
+    show() {
+      const KEY = 'ordyn.offer.v3';
+      try {
+        if (localStorage.getItem(KEY)) return;
+      } catch (error) {
+        return; // storage blocked — do not nag on every page
+      }
+
+      let shown = false;
+      const remember = () => {
+        try {
+          localStorage.setItem(KEY, 'seen');
+        } catch (error) {
+          /* ignore */
+        }
+      };
+
+      const build = () => {
+        if (shown) return;
+        shown = true;
+
+        const dialog = document.createElement('dialog');
+        dialog.className = 'offer';
+        dialog.setAttribute('aria-labelledby', 'offer-title');
+        dialog.appendChild(this._build());
+        document.body.appendChild(dialog);
+        this.attach(dialog.firstChild);
+
+        dialog.querySelector('[data-offer-close]').addEventListener('click', () => {
+          remember();
+          dialog.close();
+          dialog.remove();
+        });
+        dialog.addEventListener('close', remember);
+
+        dialog.showModal();
+        dialog.querySelector('#offer-email').focus();
+      };
+
+      const queue = () => {
+        // Wait for the verification gate to clear first, so the two never stack.
+        if (document.querySelector('dialog.age-gate[open]')) {
+          const watcher = window.setInterval(() => {
+            if (!document.querySelector('dialog.age-gate[open]')) {
+              window.clearInterval(watcher);
+              build();
+            }
+          }, 400);
+          return;
+        }
+        build();
+      };
+
+      window.setTimeout(queue, 12000);
+      window.addEventListener(
+        'scroll',
+        () => {
+          if (window.scrollY > 1400) queue();
+        },
+        { passive: true },
+      );
+    }
+  }
+
+  class TrustpilotStripController {
+    constructor() {
+      this._element = null;
+    }
+
+    build() {
+      const TRUSTPILOT = 'https://www.trustpilot.com/review/ordyn';
+      const box = document.createElement('div');
+      box.className = 'strip';
+      box.innerHTML =
+        '<p class="strip__stars"><a href="' + TRUSTPILOT + '" target="_blank" rel="noopener">' +
+        '<span class="strip__excellent">Excellent</span>' +
+        '<span class="strip__box" aria-hidden="true">★★★★★</span>' +
+        '<span class="strip__word">Trustpilot</span></a></p>';
+      this._element = box;
+      return box;
+    }
+
+    show() {
+      // One strip under the nav, on every page — the same live component as
+      // the one inside the email offer, so the two never disagree.
+      document.querySelectorAll('.header__row').forEach((row) => {
+        if (row.querySelector('.strip')) return;
+        row.appendChild(this.build());
+      });
+    }
   }
 
   /* ---------- Support chat ---------- */
@@ -1546,6 +1982,7 @@
   setupNewsletter();
   setupContact();
   setupWholesale();
-  setupEmailOffer();
+  new OfferController().show();
+  new TrustpilotStripController().show();
   setupSupportChat();
 })();

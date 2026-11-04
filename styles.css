@@ -2370,7 +2370,65 @@ dialog:not([open]) { display: none !important; }
 .age-gate h2 { font-size: 24px; }
 .age-gate p { font-size: 14px; color: var(--text-muted); }
 .age-gate__q { font-weight: 500; color: var(--text); }
-.age-gate__actions { display: flex; gap: 8px; margin-top: 24px; }
+/* The verification is two ticks and a button, not a question. Everything else —
+   brand mark, fine print, exit link, trust line — sits underneath in smaller type. */
+.age-gate__brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  color: var(--ink-900);
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin: 0 0 16px;
+}
+.age-gate__brand .brand__mark { display: inline-flex; color: var(--ink-900); margin-right: -0.12em; }
+.age-gate__brand .brand__mark svg { width: 1em; height: 1em; }
+.age-gate__confirm { display: grid; gap: 12px; margin-top: 24px; }
+.age-gate__check {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+.age-gate__check:hover { background: var(--surface-alt); }
+.age-gate__check:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-color: var(--primary);
+}
+.age-gate__check input {
+  width: 20px;
+  height: 20px;
+  margin: 1px 0 0;
+  accent-color: var(--primary);
+  flex: none;
+  cursor: pointer;
+}
+.age-gate__check strong { font-weight: 600; }
+.age-gate--has-error .age-gate__check:not(:has(input:checked)) { border-color: var(--danger); }
+.age-gate__error { margin: 12px 0 0; font-size: 13px; color: var(--danger); }
+.age-gate__actions { display: flex; gap: 8px; margin-top: 16px; }
+.age-gate__actions .btn { min-height: 48px; }
+.age-gate__actions .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.age-gate__fine { font-size: 12px; line-height: 1.55; margin-top: 24px; }
+.age-gate__fine a { color: var(--text-muted); text-decoration: underline; text-underline-offset: 2px; }
+.age-gate__fine a:hover { color: var(--primary); }
+.age-gate__exit { font-size: 14px; margin-top: 16px; }
+.age-gate__exit a { color: var(--text); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+.age-gate__exit a:hover { color: var(--primary); }
+.age-gate__trust { font-size: 12px; margin-top: 12px; }
+.age-gate__trust a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
 .age-gate__denied { margin-top: 16px; font-size: 13px; color: var(--danger); }
 
 .coa-modal {
@@ -2514,20 +2572,71 @@ dialog:not([open]) { display: none !important; }
   max-width: 100%;
 }
 .offer::backdrop { background: rgba(11, 14, 19, 0.62); }
-.offer__inner { padding: 40px 36px 32px; position: relative; text-align: center; }
-.offer__mark { display: inline-flex; color: var(--ink-900); margin-bottom: 18px; }
-.offer .kicker { margin: 0 0 12px; }
-.offer h2 { font-size: 26px; margin: 0 0 12px; }
+.offer__inner { padding: 40px 36px 32px; position: relative; text-align: left; }
+.offer__brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  color: var(--ink-900);
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin: 0 8px 0 0;
+  vertical-align: middle;
+}
+.offer__brand .brand__mark { display: inline-flex; color: var(--ink-900); margin-right: -0.12em; }
+.offer__brand .brand__mark svg { width: 1em; height: 1em; }
+.offer__eyebrow {
+  display: inline-block;
+  margin: 0;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--stone-100);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  vertical-align: middle;
+}
+.offer h2 { font-size: 26px; margin: 16px 0 12px; }
 .offer__copy {
   font-size: 15px;
   color: var(--text-muted);
-  margin: 0 auto;
-  max-width: 34ch;
+  margin: 0;
 }
-.offer__form { display: grid; gap: 10px; margin-top: 24px; }
+.offer__list {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--border);
+  display: grid;
+  gap: 8px;
+}
+.offer__list li {
+  position: relative;
+  padding-left: 24px;
+  font-size: 14px;
+  color: var(--text);
+}
+.offer__list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 1px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--success);
+}
+.offer__form { display: flex; gap: 8px; margin-top: 24px; }
 .offer__form input[type="email"] {
-  width: 100%;
-  min-height: 46px;
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
   padding: 10px 14px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -2535,14 +2644,15 @@ dialog:not([open]) { display: none !important; }
   color: var(--text);
   font-family: var(--font-body);
   font-size: 15px;
-  text-align: center;
+  text-align: left;
 }
+.offer__form input::placeholder { color: var(--text-muted); }
 .offer__form input[type="email"]:focus {
   outline: 2px solid var(--primary);
   outline-offset: 1px;
   border-color: var(--primary);
 }
-.offer__form .btn { width: 100%; }
+.offer__form .btn { flex: none; min-height: 48px; }
 .offer__note { font-size: 14px; color: var(--text-muted); margin: 12px 0 0; min-height: 18px; }
 .offer__note.is-error { color: var(--danger); }
 .offer__code {
@@ -2561,23 +2671,86 @@ dialog:not([open]) { display: none !important; }
   position: absolute;
   top: 12px;
   right: 12px;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 0;
-  border-radius: var(--radius-sm);
-  background: transparent;
+  border-radius: 50%;
+  background: var(--stone-100);
   color: var(--text-muted);
-  font-size: 20px;
-  line-height: 1;
   cursor: pointer;
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
 }
-.offer__close:hover { background: var(--stone-100); color: var(--text); }
+.offer__close:hover { background: var(--stone-200); color: var(--text); }
+.offer__thanks {
+  margin: 24px 0 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.offer__stars { margin: 0; font-size: 15px; }
+.offer__stars a { display: inline-flex; align-items: center; gap: 8px; color: var(--text); font-weight: 500; }
+.offer__stars a:hover { color: var(--primary); }
 .offer__fine {
   font-size: 12px;
   line-height: 1.5;
   color: var(--text-muted);
-  margin: 16px auto 0;
-  max-width: 38ch;
+  margin: 12px 0 0;
+}
+
+/* --------------------------------------------------------------------------
+   Trustpilot strip — one live component in the header band on every page,
+   and the same "Excellent ★★★★★ Trustpilot" reading in the email offer
+   and the verification gate, so the three never disagree.
+   -------------------------------------------------------------------------- */
+
+.strip {
+  flex: 1 0 100%;
+  min-width: 0;
+  border-top: 1px solid var(--stone-200);
+  padding-block: 8px;
+}
+.strip__stars { margin: 0; }
+.strip__stars a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 28px;
+  color: var(--text);
+}
+.strip__stars a:hover { color: var(--primary); }
+.strip__excellent { font-size: 14px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+.strip__box {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+  background: var(--success);
+  color: #FFFFFF;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+.strip__word { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+/* From 1024px the strip rides inside the header row: under the nav tabs on
+   the left, the search in the middle, the Trustpilot link on the right. */
+@media (min-width: 1024px) {
+  .strip {
+    order: 0;
+    flex: 0 0 auto;
+    border-top: 0;
+    padding-block: 0;
+    margin-left: 16px;
+  }
+  .strip__stars a { justify-content: flex-start; }
 }
 
 /* --------------------------------------------------------------------------
