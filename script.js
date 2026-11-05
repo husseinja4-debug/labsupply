@@ -106,11 +106,16 @@
           product: product,
           qty: qty,
           rate: rate,
-          total: gross * (1 - rate),
-          saving: gross * rate
+          sub: !!item.sub,
+          total: gross * (1 - rate) * (1 - subscriptionRate(item)),
+          saving: gross - gross * (1 - rate) * (1 - subscriptionRate(item))
         };
       })
       .filter(Boolean);
+  }
+
+  function subscriptionRate(item) {
+    return item && item.sub ? 0.10 : 0;
   }
 
   function tierRate(qty) {
@@ -165,7 +170,7 @@
     document.dispatchEvent(new CustomEvent("labsupply:cart"));
   }
 
-  function addToCart(id, qty) {
+  function addToCart(id, qty, sub) {
     var product = findProduct(id);
     if (!product) return;
     qty = Math.max(1, Number(qty) || 1);
@@ -177,8 +182,9 @@
 
     if (existing) {
       existing.qty += qty;
+      existing.sub = !!sub;
     } else {
-      cart.push({ id: String(id), qty: qty });
+      cart.push({ id: String(id), qty: qty, sub: !!sub });
     }
 
     saveCart(cart);
@@ -191,7 +197,7 @@
     var next = [];
     cart.forEach(function (item) {
       if (String(item.id) !== String(id)) return next.push(item);
-      if (qty > 0) next.push({ id: String(item.id), qty: qty });
+      if (qty > 0) next.push({ id: String(item.id), qty: qty, sub: !!item.sub });
     });
     saveCart(next);
     updateCount();
@@ -378,7 +384,7 @@
       syncTier();
     });
     root.querySelector("[data-add-qty]").addEventListener("click", function () {
-      addToCart(product.id, qty);
+      addToCart(product.id, qty, root.querySelector('[data-purchase][value="sub"]').checked);
     });
 
     // Structured data + share tags for this specific product
@@ -457,7 +463,7 @@
             '<li class="cart-line" data-line="' + line.product.id + '">' +
             '<div class="cart-line__media"><img src="' + line.product.image +
             '" width="64" height="64" alt="' + line.product.name + '"></div>' +
-            "<div><p class=\"cart-line__name\">" + line.product.name + "</p>" +
+            "<div><p class=\"cart-line__name\">" + line.product.name + (line.sub ? " · Subscribe and save 10%" : "") + "</p>" +
             '<p class="cart-line__meta">' + money(line.product.price) + " · " +
             line.product.size + "</p></div>" +
             '<div class="cart-line__controls">' +
@@ -1152,7 +1158,7 @@ class OfferController {
       build();
     };
 
-    window.setTimeout(queue, 12000);
+    window.setTimeout(queue, 10000);
     window.addEventListener(
       'scroll',
       () => {
