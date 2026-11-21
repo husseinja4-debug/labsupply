@@ -1,7 +1,7 @@
-# Ordyn — robots.txt
+# Ordyxbio — robots.txt
 # Replace the placeholder domain below with the real one before launch.
 
 User-agent: *
 Allow: /
 
-Sitemap: https://ordyn.example/sitemap.xml
+Sitemap: https://ordyxbio.example/sitemap.xml

@@ -1,4 +1,4 @@
-/* Ordyn — the product catalogue.
+/* Ordyxbio — the product catalogue.
    Every page reads this list, so prices and names only live in one place. */
 
 window.PRODUCTS = [

@@ -1,4 +1,4 @@
-/* Ordyn — shared behaviours for every page.
+/* Ordyxbio — shared behaviours for every page.
    Cart storage, the product rail, shop filters, product, cart and checkout. */
 
 (function () {
@@ -30,7 +30,7 @@
     return node;
   }
 
-  /* Ordyn catalogue number — the eyebrow on every card and spec panel. */
+  /* Ordyxbio catalogue number — the eyebrow on every card and spec panel. */
   function catalogNo(product) {
     return "ORD-" + String(product.id).padStart(4, "0");
   }
@@ -73,7 +73,7 @@
   /* ---------- Coupon ---------- */
   function readCoupon() {
     try {
-      return localStorage.getItem("ordyn.coupon.v1") || "";
+      return localStorage.getItem("ordyxbio.coupon.v1") || "";
     } catch (error) {
       return "";
     }
@@ -81,8 +81,8 @@
 
   function saveCoupon(code) {
     try {
-      if (code) localStorage.setItem("ordyn.coupon.v1", code);
-      else localStorage.removeItem("ordyn.coupon.v1");
+      if (code) localStorage.setItem("ordyxbio.coupon.v1", code);
+      else localStorage.removeItem("ordyxbio.coupon.v1");
     } catch (error) {
       /* ignore */
     }
@@ -325,7 +325,7 @@
       return;
     }
 
-    document.title = product.name + " — Ordyn";
+    document.title = product.name + " — Ordyxbio";
     root.querySelector("[data-product-image]").src = product.image;
     root.querySelector("[data-product-image]").alt = product.name + " research vial";
     root.querySelector("[data-product-name]").textContent = product.name;
@@ -398,7 +398,7 @@
       image: [image],
       description: product.blurb,
       category: product.category,
-      brand: { "@type": "Brand", name: "Ordyn" },
+      brand: { "@type": "Brand", name: "Ordyxbio" },
       offers: {
         "@type": "Offer",
         price: product.price.toFixed(2),
@@ -421,7 +421,7 @@
     var desc = document.querySelector('meta[name="description"]');
     if (desc) desc.setAttribute("content", product.blurb.slice(0, 155));
     var ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) ogTitle.setAttribute("content", product.name + " — Ordyn");
+    if (ogTitle) ogTitle.setAttribute("content", product.name + " — Ordyxbio");
 
     // Related compounds: same category first, then the rest
     var relatedWrap = document.querySelector("[data-related-wrap]");
@@ -905,7 +905,7 @@ class AgeGateController {
 
   // Builds the verification panel; returns the element to mount.
   build() {
-    const TRUSTPILOT = 'https://www.trustpilot.com/review/ordyn';
+    const TRUSTPILOT = 'https://www.trustpilot.com/review/ordyxbio';
     const box = document.createElement('div');
     box.className = 'age-gate__inner';
     box.innerHTML =
@@ -913,10 +913,10 @@ class AgeGateController {
       '<svg viewBox="0 0 100 100" width="20" height="20" fill="none" focusable="false" aria-hidden="true">' +
       '<circle cx="50" cy="50" r="37" stroke="currentColor" stroke-width="11.5"/>' +
       '<line x1="13.75" y1="57.4" x2="86.25" y2="57.4" stroke="#2F5BEA" stroke-width="4.5"/></svg>' +
-      '</span><span>rdyn</span></p>' +
+      '</span><span>rdyxbio</span></p>' +
       '<p class="kicker">Researcher verification</p>' +
       '<h2 id="age-gate-title">Confirm before you continue</h2>' +
-      '<p>Ordyn sells laboratory products exclusively to qualified researchers and laboratories for in vitro and laboratory use. Please confirm before continuing.</p>' +
+      '<p>Ordyxbio sells laboratory products exclusively to qualified researchers and laboratories for in vitro and laboratory use. Please confirm before continuing.</p>' +
       '<div class="age-gate__confirm">' +
       '<label class="age-gate__check">' +
       '<input type="checkbox" data-age-21>' +
@@ -927,9 +927,9 @@ class AgeGateController {
       '</div>' +
       '<p class="age-gate__error" data-age-error role="alert" hidden>Tick both boxes to confirm before continuing.</p>' +
       '<div class="age-gate__actions">' +
-      '<button class="btn btn--solid btn--block" type="button" data-age-yes disabled>Enter Ordyn <span aria-hidden="true">→</span></button>' +
+      '<button class="btn btn--solid btn--block" type="button" data-age-yes disabled>Enter Ordyxbio <span aria-hidden="true">→</span></button>' +
       '</div>' +
-      '<p class="age-gate__fine">By proceeding you affirm the statements above are true. All compounds and research materials provided by Ordyn are strictly for laboratory and research use only. They are not for human or veterinary use, not for use in diagnostic procedures, and have not been evaluated by the U.S. Food and Drug Administration. <a href="faq.html#research-use">Full Terms and Conditions</a>.</p>' +
+      '<p class="age-gate__fine">By proceeding you affirm the statements above are true. All compounds and research materials provided by Ordyxbio are strictly for laboratory and research use only. They are not for human or veterinary use, not for use in diagnostic procedures, and have not been evaluated by the U.S. Food and Drug Administration. <a href="faq.html#research-use">Full Terms and Conditions</a>.</p>' +
       '<p class="age-gate__exit">Not a researcher? <a href="https://www.google.com" data-age-exit>Exit</a></p>' +
       '<p class="age-gate__trust">Excellent ★★★★★ Trustpilot — <a href="' + TRUSTPILOT + '" target="_blank" rel="noopener">Read our reviews</a></p>' +
       '<p class="age-gate__denied" data-age-denied hidden>You must be 21 or older and a qualified researcher to enter. These products are supplied for laboratory research only.</p>';
@@ -950,7 +950,7 @@ class AgeGateController {
     const heading = box.querySelector('h2');
     heading.textContent = 'You cannot continue';
     heading.nextElementSibling.textContent =
-      'Ordyn supplies laboratory products to qualified researchers only. If you are working in a laboratory or teaching institution, you can return once that applies to you.';
+      'Ordyxbio supplies laboratory products to qualified researchers only. If you are working in a laboratory or teaching institution, you can return once that applies to you.';
   }
 
   _attach(box, accept) {
@@ -1037,7 +1037,7 @@ class OfferController {
   }
 
   _build() {
-    const TRUSTPILOT = 'https://www.trustpilot.com/review/ordyn';
+    const TRUSTPILOT = 'https://www.trustpilot.com/review/ordyxbio';
     const box = document.createElement('div');
     box.className = 'offer__inner';
     box.innerHTML =
@@ -1048,7 +1048,7 @@ class OfferController {
       '<svg viewBox="0 0 100 100" width="20" height="20" fill="none" focusable="false" aria-hidden="true">' +
       '<circle cx="50" cy="50" r="37" stroke="currentColor" stroke-width="11.5"/>' +
       '<line x1="13.75" y1="57.4" x2="86.25" y2="57.4" stroke="#2F5BEA" stroke-width="4.5"/></svg>' +
-      '</span><span>rdyn</span></p>' +
+      '</span><span>rdyxbio</span></p>' +
       '<p class="offer__eyebrow">Instant 10% discount</p>' +
       '<h2 id="offer-title">Save 10%. Stack it on every sale.</h2>' +
       '<p class="offer__copy">The code lands instantly and works with every sitewide promo we run.</p>' +
@@ -1091,7 +1091,7 @@ class OfferController {
       }
       note.classList.remove('is-error');
         try {
-          localStorage.setItem('ordyn.coupon.v1', 'WELCOME10');
+          localStorage.setItem('ordyxbio.coupon.v1', 'WELCOME10');
         } catch (error) {
           /* storage blocked: the code is still shown */
         }
@@ -1106,7 +1106,7 @@ class OfferController {
   }
 
   show() {
-    const KEY = 'ordyn.offer.v3';
+    const KEY = 'ordyxbio.offer.v3';
     try {
       if (localStorage.getItem(KEY)) return;
     } catch (error) {
@@ -1175,7 +1175,7 @@ class TrustpilotStripController {
   }
 
   build() {
-    const TRUSTPILOT = 'https://www.trustpilot.com/review/ordyn';
+    const TRUSTPILOT = 'https://www.trustpilot.com/review/ordyxbio';
     const box = document.createElement('div');
     box.className = 'strip';
     box.innerHTML =
@@ -1215,7 +1215,7 @@ class TrustpilotStripController {
       "See <a href=\"faq.html#quality\">how batch testing works</a> or <a href=\"shop.html\">browse the full catalogue</a>."
     ],
     "Cofactors & coenzymes": [
-      "Cofactors and coenzymes are non-protein compounds involved in enzymatic reactions. This category groups the compounds in the Ordyn catalogue that act as, or modulate, these biochemical cofactors.",
+      "Cofactors and coenzymes are non-protein compounds involved in enzymatic reactions. This category groups the compounds in the Ordyxbio catalogue that act as, or modulate, these biochemical cofactors.",
       "The collection includes NAD+, a pyridine dinucleotide coenzyme supplied as a lyophilised powder for in-vitro work. Every lot is third-party tested and documented.",
       "Review the published analytical data in our <a href=\"faq.html#quality\">COA library</a> or <a href=\"shop.html\">browse the full catalogue</a>."
     ],
@@ -1247,7 +1247,7 @@ class TrustpilotStripController {
 
     if (titleEl) titleEl.textContent = category;
     if (crumb) crumb.textContent = category;
-    document.title = category + " — Ordyn";
+    document.title = category + " — Ordyxbio";
 
     if (intro) {
       var paragraphs = CATEGORY_COPY[category] || [];
@@ -1302,7 +1302,7 @@ class TrustpilotStripController {
     var b = product.batch || {};
     return [
       "CERTIFICATE OF ANALYSIS",
-      "Ordyn — for research and educational use only",
+      "Ordyxbio — for research and educational use only",
       "",
       "Product: " + product.name + " (" + product.size + ")",
       "COA number: " + (b.coa || "—"),
@@ -1325,7 +1325,7 @@ class TrustpilotStripController {
     var url = URL.createObjectURL(blob);
     var a = document.createElement("a");
     a.href = url;
-    a.download = "Ordyn-COA-" + (product.batch ? product.batch.coa : product.id) + ".txt";
+    a.download = "Ordyxbio-COA-" + (product.batch ? product.batch.coa : product.id) + ".txt";
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -1478,7 +1478,7 @@ class TrustpilotStripController {
   var CHAT_ANSWERS = [
     {
       match: /(where('| i)?s my order|order status|my order|track|coming|when will it|has it shipped|dispatch date)/i,
-      reply: "The tracking link is in your confirmation email. Orders placed before 2pm ET leave the same day and arrive in 2–3 business days. If the link has expired, send the order number to hello@ordyn.example and a person will look it up."
+      reply: "The tracking link is in your confirmation email. Orders placed before 2pm ET leave the same day and arrive in 2–3 business days. If the link has expired, send the order number to hello@ordyxbio.example and a person will look it up."
     },
     {
       match: /(dose|dosing|dosage|mg per|inject|reconstitut|administer|take it|human use|consume)/i,
@@ -1494,7 +1494,7 @@ class TrustpilotStripController {
     },
     {
       match: /(return|refund|damaged|broken|wrong item|missing)/i,
-      reply: "If a vial arrives damaged or is not what you ordered, email the lot number and a photo to hello@ordyn.example within 14 days and we replace it."
+      reply: "If a vial arrives damaged or is not what you ordered, email the lot number and a photo to hello@ordyxbio.example within 14 days and we replace it."
     },
     {
       match: /(wholesale|bulk|volume|purchase order|invoice|net 30|institution|university|school)/i,
@@ -1518,7 +1518,7 @@ class TrustpilotStripController {
     },
     {
       match: /(human|person|agent|real|bot|robot|who are you)/i,
-      reply: "I am " + CHAT_NAME + ", an assistant. I can answer questions about orders, certificates and shipping. For anything technical, a person replies from hello@ordyn.example within one business day."
+      reply: "I am " + CHAT_NAME + ", an assistant. I can answer questions about orders, certificates and shipping. For anything technical, a person replies from hello@ordyxbio.example within one business day."
     },
     {
       match: /(hello|hi|hey|good morning|good afternoon)/i,
@@ -1526,12 +1526,12 @@ class TrustpilotStripController {
     },
     {
       match: /(thank|thanks|cheers|great|perfect)/i,
-      reply: "Any time. If something is still unclear, hello@ordyn.example reaches a person."
+      reply: "Any time. If something is still unclear, hello@ordyxbio.example reaches a person."
     }
   ];
 
   var CHAT_FALLBACK =
-    "I do not have that one. Email hello@ordyn.example or use the contact form and a person replies within one business day.";
+    "I do not have that one. Email hello@ordyxbio.example or use the contact form and a person replies within one business day.";
 
   function setupSupportChat() {
     var launcher = el("button");
